@@ -1,0 +1,350 @@
+body, html {
+     margin: 0;
+     padding: 0;
+     font-family: Arial, sans-serif;
+     background-color: #f5f5f5;
+}
+ .container {
+     display: flex;
+     padding: 20px;
+     max-width: 1200px;
+     margin: 0 auto;
+}
+ .left-panel {
+     width: 30%;
+     padding-right: 20px;
+}
+ .right-panel {
+     width: 70%;
+}
+ .date-selector {
+     margin-bottom: 20px;
+}
+ .button-grid {
+     display: grid;
+     grid-template-columns: 1fr 1fr;
+     gap: 10px;
+     margin-bottom: 20px;
+}
+ .list {
+     width: 100%;
+     border-collapse: collapse;
+}
+ .list-header th, .list-item td {
+     border: 1px solid #ddd;
+     padding: 6px;
+     text-align: center;
+}
+ .list-item input[type="checkbox"], .list-item span:first-child {
+     text-align: left;
+     margin-right: 10px;
+     transform: scale(1.5);
+}
+ .list-item .add-button, .list-item .remove-button, .list-item .group-id {
+     margin-right: 10px;
+}
+ .list-item .group-id {
+     flex: 0.5;
+     text-align: center;
+     font-weight: bolder;
+     font-size: 14px;
+}
+ #partnersModal .modal-content, #partnersListModal .modal-content, #editPartnerModal .modal-content {
+     width: 850px;
+     margin: auto;
+     padding: 20px;
+     border: 1px solid #888;
+     background-color: #fefefe;
+}
+ .list-container {
+     overflow-y: auto;
+     max-height: 650px;
+     max-width: 650px;
+     background-color: white;
+     border-radius: 5px;
+     padding: 15px;
+     box-sizing: content-box;
+}
+ .list-header th, .list-item td {
+     max-width: 40px;
+	 min-width: 40px;
+     overflow: hidden;
+     text-overflow: ellipsis;
+}
+ .group-id{
+     width: 70px;
+}
+ .list-item td:nth-child(2) {
+     text-align: left;
+}
+ .btn_panel{
+     height:100px;
+}
+ .btn_panel:hover{
+     background-color:#dfedda;
+     transition: 0.5s;
+}
+ #addADULTE, #addEnfant, #addJeune, #openGroupModal{
+     margin: 5px;
+     font-weight:bolder;
+     font-size:20px;
+}
+ .statCount{
+     color: #4CAF50;
+     font-size: 18px;
+     font-weight: bolder;
+}
+ .statHour{
+     color: #4CAF50;
+     font-size: 18px;
+     font-weight: bolder;
+     margin-top: -15px;
+}
+ .title-spans {
+     background-color: #e0e0e0;
+     padding: 5px;
+     border-radius: 3px;
+}
+ .stats {
+     border: 1px solid #ddd;
+     border-radius: 5px;
+     margin-bottom: 20px;
+     background-color: #fff;
+}
+ .stat-title {
+     background-color: #e0e0e0;
+     padding: 10px;
+     font-weight: bold;
+     text-transform: uppercase;
+     border-radius: 3px 3px 0 0;
+     margin-bottom: 10px;
+}
+ .stat-row {
+     display: flex;
+     justify-content: space-between;
+     padding: 0 15px;
+     margin-bottom: 10px;
+}
+ .stat-label {
+     font-weight: bold;
+}
+ .stat-value {
+     color: green;
+}
+ .btn_associate, .btn_addToGroup, #addADULTE, #addEnfant, #addJeune{
+     background-color:#dfedda;
+}
+ .btn_associate:hover, .btn_addToGroup:hover, #addADULTE:hover, #addEnfant:hover, #addJeune:hover{
+     background-color:#b6e4ad;
+     transition: 0.5s;
+}
+ .btn_partbaiview, #openGroupModal{
+     background-color:#d6eef9;
+}
+ .btn_partbaiview:hover, #openGroupModal:hover{
+     background-color:#add2e4;
+     transition: 0.5s;
+}
+ .btn_deletetype{
+     background-color:#feb9c2;
+}
+ .btn_deletetype:hover{
+     background-color:#fee0e4;
+     transition: 0.5s;
+}
+ .modal {
+     display: none;
+     position: fixed;
+     z-index: 1;
+     left: 0;
+     top: 0;
+     width: 100%;
+     height: 100%;
+     overflow: auto;
+     background-color: rgb(0,0,0);
+     background-color: rgba(0,0,0,0.4);
+     padding-top: 60px;
+}
+ .modal-content {
+     background-color: #fefefe;
+     margin: 5% auto;
+     padding: 20px;
+     border: 1px solid #888;
+     width: 80%;
+     max-width: 700px;
+     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+     border-radius: 10px;
+}
+ .close {
+     color: #aaa;
+     float: right;
+     font-size: 28px;
+     font-weight: bold;
+}
+ .close:hover, .close:focus {
+     color: black;
+     text-decoration: none;
+     cursor: pointer;
+}
+ h2 {
+     text-align: center;
+}
+ .form-row {
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     margin-bottom: 15px;
+}
+ .form-half-row {
+     display: flex;
+     flex-direction: column;
+     flex: 1;
+     margin-right: 10px;
+}
+ .form-half-row:last-child {
+     margin-right: 0;
+}
+ .form-row label {
+     margin-bottom: 5px;
+     text-align: left;
+     min-width: 158px;
+     font-weight: bolder;
+}
+ .form-row input {
+     padding: 10px;
+     font-size: 16px;
+     border: 1px solid #ccc;
+     border-radius: 5px;
+     width: 100%;
+     box-sizing: border-box;
+}
+ #groupPopup {
+     display: none;
+}
+ .add-button, .remove-button{
+     background-color:#7dd494;
+     color:#fff;
+     height: 25px;
+     border-color:#63ba6a;
+}
+ .add-button:hover, .remove-button:hover{
+     background-color:#58ad6f;
+     transition: 0.5s;
+}
+ .delete-button{
+     background-color:#d47d86;
+     color:#fff;
+     height: 25px;
+     border-color:#ba636c;
+}
+ .delete-button:hover{
+     background-color:#ad5e66;
+     transition: 0.5s;
+}
+ .date-selector {
+     display: flex;
+     flex-direction: column;
+     align-items: flex-start;
+     margin-bottom: 20px;
+}
+ .date-selector input {
+     margin-top: 10px;
+     max-width: 85px;
+     font-weight: bolder;
+     font-size: 16px;
+     text-align: center;
+     padding-top:3px;
+}
+ .SayDay {
+     margin-left: 100px;
+     margin-top: -20px;
+}
+ #SWeek{
+     font-size:16px;
+     font-weight:bolder;
+}
+ #SDate{
+     font-size:14px;
+}
+/******** Style pour le Toast **************/
+ .toast-container {
+     position: fixed;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%, -50%);
+     z-index: 9999;
+}
+ .toast {
+     padding: 10px 20px;
+     background-color: #f76252;
+     color: #fff;
+     border-radius: 5px;
+     display: none;
+     text-align: center;
+}
+ .fa-chain-broken{
+     color:#bd1735;
+}
+/******** Style pour le prompte et l'alerte ***************/
+ .ui-dialog {
+     display: none;
+	 width: 100px
+}
+ .ui-dialog-titlebar {
+     background-color: #f0f0f0;
+     color: black;
+}
+ .ui-dialog-buttonpane button {
+     background-color: #4CAF50;
+     color: white;
+     border: none;
+     padding: 5px 10px;
+     border-radius: 5px;
+}
+/************** partenaire Modal *************/
+.partners-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.partners-table th, .partners-table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+.day-header {
+    background-color: #cccccc;
+    font-weight: bold;
+    text-align: left;
+    padding: 8px;
+}
+
+.partner-row td {
+    border-bottom: 1px solid #ccc;
+}
+
+.partner-row td, .day-header td {
+    padding: 8px;
+    text-align: center;
+}
+
+.partner-row button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-right: 8px;
+    font-size: 16px;
+    color: #333;
+}
+
+.partner-row button:hover {
+    color: #007BFF;
+}
+
+.partner-row i {
+    pointer-events: none; /* Assure que le clic reste sur le bouton */
+}
+
+

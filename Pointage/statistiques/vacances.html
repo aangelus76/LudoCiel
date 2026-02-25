@@ -1,0 +1,282 @@
+<style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+        h1 { margin-top: 0; }
+        .form-row { display: flex; gap: 10px; margin-bottom: 15px; align-items: center; }
+        .form-row input[type="text"], .form-row select { padding: 8px; border: 1px solid #ddd; border-radius: 4px; flex: 1; }
+        .form-row label { min-width: 100px; }
+        .radio-group { display: flex; gap: 20px; margin-bottom: 15px; }
+        .radio-group label { cursor: pointer; padding: 8px 16px; border: 2px solid #ddd; border-radius: 4px; }
+        .radio-group input[type="radio"]:checked + span { font-weight: bold; }
+        .radio-group label.vacances { border-color: #4CAF50; }
+        .radio-group label.fermeture { border-color: #f44336; }
+        button { padding: 8px 16px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #45a049; }
+        .btn-cancel { background: #999; }
+        .btn-cancel:hover { background: #888; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+        th { background: #f5f5f5; }
+        .btn-delete { background: #f44336; padding: 5px 10px; font-size: 12px; }
+        .btn-delete:hover { background: #d32f2f; }
+        .btn-edit { background: #FF9800; padding: 5px 10px; margin-right: 5px; font-size: 12px; }
+        .btn-edit:hover { background: #F57C00; }
+        .type-badge { padding: 3px 8px; border-radius: 3px; font-size: 11px; font-weight: bold; }
+        .badge-vacances { background: #c8e6c9; color: #2e7d32; }
+        .badge-fermeture { background: #ffcdd2; color: #c62828; }
+        .filter-section { margin: 20px 0; padding: 15px; background: #f9f9f9; border-radius: 4px; }
+    </style>
+
+    <div class="container">
+        <h1>Gestion des Périodes</h1>
+        
+        <form id="periodeForm">
+            <input type="hidden" id="periodeId">
+            <input type="hidden" id="periodeType">
+            
+            <div class="radio-group">
+                <label class="vacances">
+                    <input type="radio" name="type" value="vacances" checked>
+                    <span>Vacances scolaires</span>
+                </label>
+                <label class="fermeture">
+                    <input type="radio" name="type" value="fermeture">
+                    <span>Fermeture exceptionnelle</span>
+                </label>
+            </div>
+            
+            <div class="form-row">
+                <label id="labelNom">Nom :</label>
+                <input type="text" id="nom" placeholder="ex: Toussaint, Noël..." required>
+            </div>
+            
+            <div class="form-row">
+                <label>Année :</label>
+                <select id="annee" required></select>
+            </div>
+            
+            <div class="form-row">
+                <label>Période :</label>
+                <input type="text" id="date_debut_vac" placeholder="Date début" required style="flex: 1;">
+                <input type="text" id="date_fin_vac" placeholder="Date fin" required style="flex: 1;">
+            </div>
+            
+            <button type="submit" id="submitBtn">Ajouter</button>
+            <button type="button" class="btn-cancel" id="cancelBtn" style="display: none;" onclick="resetForm()">Annuler</button>
+        </form>
+        
+        <div class="filter-section">
+            <label>Filtrer par année : 
+                <select id="filterAnnee">
+                    <option value="">Toutes</option>
+                </select>
+            </label>
+        </div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 80px;">Type</th>
+                    <th>Nom/Motif</th>
+                    <th style="width: 80px;">Année</th>
+                    <th style="width: 100px;">Début</th>
+                    <th style="width: 100px;">Fin</th>
+                    <th style="width: 120px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="periodesList"></tbody>
+        </table>
+    </div>
+    
+    <script>
+    var allPeriodes = [];
+    
+    $(document).ready(function() {
+        // Config datepicker français
+        $.datepicker.regional['fr'] = {
+            closeText: 'Fermer',
+            prevText: '&#x3c;Préc',
+            nextText: 'Suiv&#x3e;',
+            currentText: 'Aujourd\'hui',
+            monthNames: ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 
+                         'Septembre', 'Octobre', 'Novembre', 'Decembre'],
+            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aou', 'Sep', 'Oct', 'Nov', 'Dec'],
+            dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+            dayNamesShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+            dayNamesMin: ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'],
+            weekHeader: ' ',
+            dateFormat: 'yy-mm-dd',
+            firstDay: 1,
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix: ''
+        };
+        $.datepicker.setDefaults($.datepicker.regional['fr']);
+        
+        // Init datepickers avec nouveaux IDs
+        $('#date_debut_vac, #date_fin_vac').datepicker();
+        
+        // Années (année courante sélectionnée par défaut)
+        var currentYear = new Date().getFullYear();
+        for (var year = currentYear + 1; year >= 2020; year--) {
+            var selected = year === currentYear ? ' selected' : '';
+            $('#annee').append('<option value="' + year + '"' + selected + '>' + year + '</option>');
+            $('#filterAnnee').append('<option value="' + year + '"' + selected + '>' + year + '</option>');
+        }
+        
+        loadAllPeriodes();
+        
+        $('#periodeForm').submit(function(e) {
+            e.preventDefault();
+            savePeriode();
+        });
+        
+        $('#filterAnnee').change(function() {
+            renderPeriodes();
+        });
+        
+        // Change label selon type
+        $('input[name="type"]').change(function() {
+            if ($(this).val() === 'vacances') {
+                $('#labelNom').text('Nom :');
+                $('#nom').attr('placeholder', 'ex: Toussaint, Noël...');
+            } else {
+                $('#labelNom').text('Motif :');
+                $('#nom').attr('placeholder', 'ex: Inventaire, Grève...');
+            }
+        });
+    });
+    
+    function loadAllPeriodes() {
+        $.when(
+            $.get('vacances_api.php?action=getAll'),
+            $.get('vacances_api.php?action=getFermetures')
+        ).done(function(vacances, fermetures) {
+            allPeriodes = [];
+            
+            vacances[0].forEach(function(v) {
+                allPeriodes.push({
+                    id: v.id,
+                    type: 'vacances',
+                    nom: v.nom,
+                    annee: v.annee,
+                    date_debut: v.date_debut,
+                    date_fin: v.date_fin
+                });
+            });
+            
+            fermetures[0].forEach(function(f) {
+                allPeriodes.push({
+                    id: f.id,
+                    type: 'fermeture',
+                    nom: f.motif,
+                    annee: f.annee,
+                    date_debut: f.date_debut,
+                    date_fin: f.date_fin
+                });
+            });
+            
+            renderPeriodes();
+        });
+    }
+    
+    function renderPeriodes() {
+        var filterAnnee = $('#filterAnnee').val();
+        var tbody = $('#periodesList');
+        tbody.empty();
+        
+        var filtered = allPeriodes;
+        if (filterAnnee) {
+            filtered = allPeriodes.filter(function(p) {
+                return p.annee == filterAnnee;
+            });
+        }
+        
+        // Tri par date
+        filtered.sort(function(a, b) {
+            return new Date(a.date_debut) - new Date(b.date_debut);
+        });
+        
+        filtered.forEach(function(p) {
+            var badgeClass = p.type === 'vacances' ? 'badge-vacances' : 'badge-fermeture';
+            var badgeText = p.type === 'vacances' ? 'Vacances' : 'Fermeture';
+            
+            var row = '<tr>' +
+                '<td><span class="type-badge ' + badgeClass + '">' + badgeText + '</span></td>' +
+                '<td>' + p.nom + '</td>' +
+                '<td>' + p.annee + '</td>' +
+                '<td>' + p.date_debut + '</td>' +
+                '<td>' + p.date_fin + '</td>' +
+                '<td>' +
+                '<button class="btn-edit" onclick="editPeriode(' + p.id + ', \'' + p.type + '\', \'' + 
+                p.nom.replace(/'/g, "\\'") + '\', ' + p.annee + ', \'' + p.date_debut + '\', \'' + p.date_fin + '\')">✎</button>' +
+                '<button class="btn-delete" onclick="deletePeriode(' + p.id + ', \'' + p.type + '\')">🗑</button>' +
+                '</td></tr>';
+            tbody.append(row);
+        });
+    }
+    
+    function savePeriode() {
+        var id = $('#periodeId').val();
+        var type = $('input[name="type"]:checked').val();
+        var data = {
+            nom: $('#nom').val(),
+            motif: $('#nom').val(),
+            annee: $('#annee').val(),
+            date_debut: $('#date_debut_vac').val(),
+            date_fin: $('#date_fin_vac').val()
+        };
+        
+        var action = '';
+        if (type === 'vacances') {
+            action = id ? 'update' : 'add';
+        } else {
+            action = id ? 'updateFermeture' : 'addFermeture';
+        }
+        
+        if (id) data.id = id;
+        
+        $.ajax({
+            url: 'vacances_api.php?action=' + action,
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function() {
+                resetForm();
+                loadAllPeriodes();
+            }
+        });
+    }
+    
+    function editPeriode(id, type, nom, annee, debut, fin) {
+        $('#periodeId').val(id);
+        $('#periodeType').val(type);
+        $('#nom').val(nom);
+        $('#annee').val(annee);
+        $('#date_debut_vac').val(debut);
+        $('#date_fin_vac').val(fin);
+        
+        $('input[name="type"][value="' + type + '"]').prop('checked', true).trigger('change');
+        
+        $('#submitBtn').text('Modifier');
+        $('#cancelBtn').show();
+    }
+    
+    function deletePeriode(id, type) {
+        if (confirm('Supprimer cette période ?')) {
+            var action = type === 'vacances' ? 'delete' : 'deleteFermeture';
+            $.get('vacances_api.php?action=' + action + '&id=' + id, function() {
+                loadAllPeriodes();
+            });
+        }
+    }
+    
+    function resetForm() {
+        $('#periodeForm')[0].reset();
+        $('#periodeId').val('');
+        $('#periodeType').val('');
+        $('#submitBtn').text('Ajouter');
+        $('#cancelBtn').hide();
+        $('input[name="type"][value="vacances"]').prop('checked', true).trigger('change');
+    }
+    </script>

@@ -1,0 +1,29 @@
+//Lecture de version
+V-02.B5.24
+V = Version
+02 = Semaine 2
+B = mardi( A = Lundi, B= Mardi, C = Mercredi, D = Jeudi, E = Vendredi, F = Samedi, G = Dimanche) / 5 = 5eme modification du jour
+24 = 2024 (l'année)
+
+// A faire
++ Ajout fonction, pas deux prêt sur le même jour, vérifier en amont si un item est disponible avant d'enregistrer le prêt. (éviter le chevauchement de prêt)
+- Ajouter systeme d'administration,
+	* Systeme d'ajout d'items
+	* Systeme de suppression d'items
+	* Systeme de statistique des prêts, /!\ a ne pas supprimer les appointements l'ors de la suppression d'items, plutôt les rendre invisible pour pouvoir les comptabiliser
+
+//Mise à jour
+02.C1.24 - [Fixé]    Bug : Le modal ajoute 1 jours pour la date de retour du prêt et dans la timeline, corrigé.
+05.E1.24 - [Fixé]    Bug : Problème d'affichage si le prêt date de plus d'un mois avant le mois en cours, ajout d'un mois avant soit maintenant récupération de deux mois avant et après le mois en cours.
+06.B1.24 - [Ajout]   Fonctionnalité : Modification du code pour faire apparaitre deux boutons "Départ/Retour" pour afficher la liste des prêt qui Entre/Sort celons la date.
+06.G1.24 - [Redraw]  Interface : Adaptation des cellules celons la largeur de l'écran pour afficher tout le mois (et pour intégration scrolling).
+06.G2.24 - [Ajout]   Fonctionnalité : Ajout d'un champs de recherche, qui permet de scroll automatiquement à la ressource recherché.
+07.B1.24 - [Fixé]    Bug : La liste des retours/départ n'était pas mis à jour au premier click, il fallait cliquer 2x pour faire apparaitre la liste à jour.
+12.B1.24 - [Fixé]    Correctif : La suppression d'ancienne référence à provoquer une anomalie dans l'utilisation des données, il était complexe d'ajouter des nouvelle référence, la BDD à donc été retravaillé.
+12.B2.24 - [Ajout]   Ressources : Ajout de 3 références pour le Cornhole, ajout d'une référence pour Weyckik moyen et ajout d'une nouvelle ressource (Toss It)
+22.B1.24 - [Modif]   Test de la version 8 de php x64-x86 (ancienne version : 7), aucune version compatible avec windows 7.
+27.G1.24 - [Ajout]   Fonctionnalité : Prototype de page qui permet d'afficher les prêt sur une période pour de future statistique.
+34.A1.24 - [Fixé]    Bug : Si il y avais des ' dans le commentaire, cela empêchais la mise a jours de la réservation.
+34.A2.24 - [Fixé]    Bug : Mauvaise relation d'ID par moment, ce qui pouvais créer un décalage dans certaine réservation, Ex: faire descendre d'une ligne une réservation.
+34.A3.24 - [Ajout]   Fonctionnalité : Prototype de page qui permet d'ajouter/réduire/supprimer les ressources dans la liste des jeux.
+34.C1.24 - [Fixé]    Bug : Erreur de récupération des items dans la liste des Départ/Retour.

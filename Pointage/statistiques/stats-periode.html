@@ -1,0 +1,798 @@
+<div class="date-selector">
+        <input type="text" id="date_debut" placeholder="Date début">
+        <input type="text" id="date_fin" placeholder="Date fin">
+        <button onclick="chargerDonnees()">Afficher les graphiques</button>
+        <button id="exportPdfBtn" style="margin-left: 10px; background-color: #f44336; color: white;">Exporter en PDF</button>
+    </div>
+
+<div class="stats-container">
+    <div class="stat-card">
+        <h3>Présences</h3>
+        <div class="stat-medium">
+            <span>Adhérents: <span id="total_adherents" class="stat-value-medium">-</span></span>
+            <span>Partenaires: <span id="total_partenaires" class="stat-value-medium">-</span> (<span id="nb_groupes_partenaires">-</span> groupes)</span>
+        </div>
+        <div class="stat-big">
+            <span>Total: <span id="total_presences_global" class="stat-value-big">-</span></span>
+        </div>
+    </div>
+    <div class="stat-card">
+        <h3>Heures</h3>
+        <div class="stat-medium">
+            <span>Adhérents: <span id="heures_adherents" class="stat-value-medium">-</span></span>
+            <span>Partenaires: <span id="heures_partenaires" class="stat-value-medium">-</span></span>
+        </div>
+        <div class="stat-big">
+            <span>Total: <span id="total_heures_global" class="stat-value-big">-</span></span>
+        </div>
+    </div>
+</div>
+
+    <div class="chart-container">
+        <canvas id="repartitionChart"></canvas>
+    </div>
+
+    <div class="chart-container">
+        <canvas id="repartitionHeuresChart"></canvas>
+    </div>
+
+    <div class="chart-container">
+        <canvas id="presencesParJourSemaineChart"></canvas>
+    </div>
+
+    <div class="multi-chart-container">
+        <div class="chart-title">Affluence par tranche de 15 minutes pour chaque jour (par semaine)</div>
+        <div class="multi-chart-grid">
+            <div class="small-chart">
+                <canvas id="lundiChart"></canvas>
+            </div>
+            <div class="small-chart">
+                <canvas id="mardiChart"></canvas>
+            </div>
+            <div class="small-chart">
+                <canvas id="mercrediChart"></canvas>
+            </div>
+            <div class="small-chart">
+                <canvas id="jeudiChart"></canvas>
+            </div>
+            <div class="small-chart">
+                <canvas id="vendrediChart"></canvas>
+            </div>
+            <div class="small-chart">
+                <canvas id="samediChart"></canvas>
+            </div>
+            <div class="small-chart">
+                <div id="legende-semaines"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="scrollable-chart-container">
+        <div class="scrollable-chart">
+            <canvas id="affluenceHeuresChart"></canvas>
+        </div>
+    </div>
+
+    <div class="scrollable-chart-container">
+        <div class="scrollable-chart">
+            <canvas id="affluenceParSemaineChart"></canvas>
+        </div>
+    </div>
+
+    <div class="scrollable-chart-container">
+        <div class="scrollable-chart">
+            <canvas id="presenceTypeChart"></canvas>
+        </div>
+    </div>
+
+    <div class="scrollable-chart-container">
+        <div class="scrollable-chart">
+            <canvas id="totalPresenceChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+/* Configuration globale Chart.js v2 - Compatible Chrome v57 */
+Chart.defaults.global.plugins.datalabels = {
+   color: 'black',
+   font: {
+       weight: 'bold'
+   },
+   formatter: function(value) {
+       return value || '';
+   }
+};
+
+/* Initialisation jQuery UI datepicker */
+$(document).ready(function() {
+    $.datepicker.regional['fr'] = {
+        closeText: 'Fermer',
+        prevText: '&#x3c;Préc',
+        nextText: 'Suiv&#x3e;',
+        currentText: 'Aujourd\'hui',
+        monthNames: ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 
+                     'Septembre', 'Octobre', 'Novembre', 'Decembre'],
+        monthNamesShort: ['Jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aou', 'Sep', 'Oct', 'Nov', 'Dec'],
+        dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+        dayNamesShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+        dayNamesMin: ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'],
+        weekHeader: ' ',
+        dateFormat: 'yy-mm-dd',
+        firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: ''
+    };
+    $.datepicker.setDefaults($.datepicker.regional['fr']);
+    
+    $("#date_debut").datepicker();
+    $("#date_fin").datepicker();
+});
+
+function getJourSemaine(dateComplete) {
+   var jours = ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'];
+   var date = new Date(dateComplete);
+   return jours[date.getDay()];
+}
+
+// Convertit format HH:MM en minutes
+function heuresEnMinutes(heureStr) {
+    var parts = heureStr.split(':');
+    return parseInt(parts[0]) * 60 + parseInt(parts[1]);
+}
+
+// Convertit minutes en format HH:MM
+function minutesEnHeures(minutes) {
+    var h = Math.floor(minutes / 60);
+    var m = minutes % 60;
+    return h + ':' + (m < 10 ? '0' : '') + m;
+}
+
+function chargerDonnees() {
+   var dateDebut = document.getElementById('date_debut').value;
+   var dateFin = document.getElementById('date_fin').value;
+
+   if (!dateDebut || !dateFin) {
+       alert('Veuillez sélectionner une période');
+       return;
+   }
+
+   fetch('get_presence_data_periode.php?date_debut=' + dateDebut + '&date_fin=' + dateFin)
+       .then(function(response) {
+           return response.json();
+       })
+       .then(function(data) {
+           updateCharts(data);
+           
+           document.getElementById('total_adherents').textContent = data.total_general;
+           document.getElementById('total_partenaires').textContent = data.partenaires.total_presences;
+           document.getElementById('nb_groupes_partenaires').textContent = data.partenaires.nombre_groupes;
+           document.getElementById('total_presences_global').textContent = data.total_presences_global;
+           
+           document.getElementById('heures_adherents').textContent = data.heures_adherents;
+           document.getElementById('heures_partenaires').textContent = data.partenaires.total_heures;
+           document.getElementById('total_heures_global').textContent = data.total_heures_global;
+       })
+       .catch(function(error) {
+           console.error('Erreur:', error);
+           alert('Erreur lors du chargement des données');
+       });
+}
+
+function generateColorPalette(numberOfWeeks) {
+    var baseHues = [210, 0, 120, 270, 30, 180, 300, 60, 330, 150, 240, 90];
+    var variationsPerHue = 4;
+    var colors = [];
+    
+    for (var i = 0; i < numberOfWeeks; i++) {
+        var hueIndex = Math.floor(i / variationsPerHue) % baseHues.length;
+        var hue = baseHues[hueIndex];
+        var variationIndex = i % variationsPerHue;
+        var saturation = 75;
+        var lightness = 80 - (variationIndex * 15);
+        var color = 'hsl(' + hue + ', ' + saturation + '%, ' + lightness + '%)';
+        colors.push(color);
+    }
+    
+    return colors;
+}
+
+function updateCharts(data) {
+   var chartIds = ['repartitionChart', 'repartitionHeuresChart', 'presencesParJourSemaineChart', 
+                   'affluenceHeuresChart', 'affluenceParSemaineChart', 'presenceTypeChart', 
+                   'totalPresenceChart', 'lundiChart', 'mardiChart', 'mercrediChart', 'jeudiChart', 
+                   'vendrediChart', 'samediChart'];
+   
+   // Destruction propre des graphiques Chart.js v2
+   for (var i = 0; i < chartIds.length; i++) {
+       var canvas = document.getElementById(chartIds[i]);
+       if (canvas) {
+           var existingChart = Chart.getChart ? Chart.getChart(canvas) : canvas.chart;
+           if (existingChart) {
+               existingChart.destroy();
+           }
+           canvas.chart = null;
+       }
+   }
+
+   var nombreGroupesPartenaires = data.partenaires.nombre_groupes || 0;
+
+   var chartRepartition = new Chart(document.getElementById('repartitionChart'), {
+       type: 'bar',
+       data: {
+           labels: ['Adultes', 'Enfants', 'Jeunes', 'Partenaires\n(personnes)', 'Partenaires\n(groupes)'],
+           datasets: [{
+               data: [
+                   data.total_adultes || 0,
+                   data.total_enfants || 0,
+                   data.total_jeunes || 0,
+                   data.partenaires.total_presences || 0,
+                   nombreGroupesPartenaires
+               ],
+               backgroundColor: ['#8884d8', '#82ca9d', '#ffc658', '#ff7043', '#ff9e80']
+           }]
+       },
+       options: {
+           responsive: true,
+           maintainAspectRatio: true,
+           title: {
+               display: true,
+               text: 'Répartition par type',
+               fontSize: 16
+           },
+           legend: { 
+               display: false 
+           },
+           plugins: {
+               datalabels: {
+                   anchor: 'end',
+                   align: 'top',
+                   formatter: function(value) {
+                       return value || '0';
+                   },
+                   font: { 
+                       weight: 'bold' 
+                   }
+               }
+           },
+           scales: {
+               yAxes: [{ 
+                   ticks: {
+                       beginAtZero: true,
+                       min: 0
+                   }
+               }]
+           }
+       }
+   });
+   document.getElementById('repartitionChart').chart = chartRepartition;
+
+   // Convertir heures en minutes pour graphique
+   var minutesAdh = heuresEnMinutes(data.heures_adultes);
+   var minutesEnf = heuresEnMinutes(data.heures_enfants);
+   var minutesJeu = heuresEnMinutes(data.heures_jeunes);
+   var minutesPart = heuresEnMinutes(data.partenaires.total_heures);
+
+   var chartHeures = new Chart(document.getElementById('repartitionHeuresChart'), {
+       type: 'bar',
+       data: {
+           labels: ['Adultes', 'Enfants', 'Jeunes', 'Partenaires'],
+           datasets: [{
+               data: [
+                   minutesAdh,
+                   minutesEnf,
+                   minutesJeu,
+                   minutesPart
+               ],
+               backgroundColor: ['#8884d8', '#82ca9d', '#ffc658', '#ff7043']
+           }]
+       },
+       options: {
+           responsive: true,
+           maintainAspectRatio: true,
+           title: {
+               display: true,
+               text: 'Total des heures par type',
+               fontSize: 16
+           },
+           legend: { 
+               display: false 
+           },
+           plugins: {
+               datalabels: {
+                   formatter: function(value) { 
+                       return minutesEnHeures(value);
+                   }
+               }
+           },
+           scales: {
+               yAxes: [{
+                   ticks: {
+                       beginAtZero: true,
+                       callback: function(value) {
+                           return minutesEnHeures(value);
+                       }
+                   }
+               }]
+           }
+       }
+   });
+   document.getElementById('repartitionHeuresChart').chart = chartHeures;
+
+   var chartJourSemaine = new Chart(document.getElementById('presencesParJourSemaineChart'), {
+       type: 'bar',
+       data: {
+           labels: ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'],
+           datasets: [
+               {
+                   label: 'Adhérents',
+                   data: [
+                       data.presences_par_jour.Lundi || 0,
+                       data.presences_par_jour.Mardi || 0,
+                       data.presences_par_jour.Mercredi || 0,
+                       data.presences_par_jour.Jeudi || 0,
+                       data.presences_par_jour.Vendredi || 0,
+                       data.presences_par_jour.Samedi || 0,
+                       data.presences_par_jour.Dimanche || 0
+                   ],
+                   backgroundColor: '#2196F3'
+               },
+               {
+                   label: 'Partenaires',
+                   data: [
+                       data.presences_partenaires_par_jour.Lundi || 0,
+                       data.presences_partenaires_par_jour.Mardi || 0,
+                       data.presences_partenaires_par_jour.Mercredi || 0,
+                       data.presences_partenaires_par_jour.Jeudi || 0,
+                       data.presences_partenaires_par_jour.Vendredi || 0,
+                       data.presences_partenaires_par_jour.Samedi || 0,
+                       data.presences_partenaires_par_jour.Dimanche || 0
+                   ],
+                   backgroundColor: '#FF9800'
+               },
+               {
+                   label: 'Total',
+                   data: [
+                       data.presences_totales_par_jour.Lundi || 0,
+                       data.presences_totales_par_jour.Mardi || 0,
+                       data.presences_totales_par_jour.Mercredi || 0,
+                       data.presences_totales_par_jour.Jeudi || 0,
+                       data.presences_totales_par_jour.Vendredi || 0,
+                       data.presences_totales_par_jour.Samedi || 0,
+                       data.presences_totales_par_jour.Dimanche || 0
+                   ],
+                   backgroundColor: '#4CAF50'
+               }
+           ]
+       },
+       options: {
+           responsive: true,
+           maintainAspectRatio: true,
+           title: {
+               display: true,
+               text: 'Total des présences par jour de la semaine',
+               fontSize: 16
+           },
+           legend: { 
+               display: true 
+           },
+           scales: {
+               yAxes: [{ 
+                   ticks: {
+                       beginAtZero: true
+                   }
+               }]
+           }
+       }
+   });
+   document.getElementById('presencesParJourSemaineChart').chart = chartJourSemaine;
+
+const creneaux = [
+    '10:00', '10:15', '10:30', '10:45',
+    '11:00', '11:15', '11:30', '11:45',
+    '12:00', '12:15', '12:30',
+    '14:00', '14:15', '14:30', '14:45',
+    '15:00', '15:15', '15:30', '15:45',
+    '16:00', '16:15', '16:30', '16:45',
+    '17:00', '17:15', '17:30', '17:45',
+    '18:00'
+];
+
+   var chartAffluenceHeures = new Chart(document.getElementById('affluenceHeuresChart'), {
+       type: 'bar',
+       data: {
+           labels: creneaux,
+           datasets: [
+               {
+                   label: 'Lundi',
+                   data: creneaux.map(function(creneau) {
+                       return data.affluence_heures.Lundi[creneau] || 0;
+                   }),
+                   backgroundColor: '#9C27B0'
+               },
+               {
+                   label: 'Mardi',
+                   data: creneaux.map(function(creneau) {
+                       return data.affluence_heures.Mardi[creneau] || 0;
+                   }),
+                   backgroundColor: '#82ca9d'
+               },
+               {
+                   label: 'Mercredi',
+                   data: creneaux.map(function(creneau) {
+                       return data.affluence_heures.Mercredi[creneau] || 0;
+                   }),
+                   backgroundColor: '#ffc658'
+               },
+               {
+                   label: 'Jeudi',
+                   data: creneaux.map(function(creneau) {
+                       return data.affluence_heures.Jeudi[creneau] || 0;
+                   }),
+                   backgroundColor: '#ff8042'
+               },
+               {
+                   label: 'Vendredi',
+                   data: creneaux.map(function(creneau) {
+                       return data.affluence_heures.Vendredi[creneau] || 0;
+                   }),
+                   backgroundColor: '#0088fe'
+               },
+               {
+                   label: 'Samedi',
+                   data: creneaux.map(function(creneau) {
+                       return data.affluence_heures.Samedi[creneau] || 0;
+                   }),
+                   backgroundColor: '#00C49F'
+               }
+           ]
+       },
+       options: {
+           responsive: true,
+           maintainAspectRatio: false,
+           title: {
+               display: true,
+               text: 'Affluence par tranche de 15 minutes et par jour de semaine',
+               fontSize: 16
+           },
+           plugins: {
+               datalabels: {
+                   display: function(context) {
+                       return context.dataset.data[context.dataIndex] > 0;
+                   }
+               }
+           },
+           scales: {
+               xAxes: [{
+                   scaleLabel: {
+                       display: true,
+                       labelString: 'Heure'
+                   }
+               }],
+               yAxes: [{
+                   ticks: {
+                       beginAtZero: true
+                   },
+                   scaleLabel: {
+                       display: true,
+                       labelString: 'Nombre de présences'
+                   }
+               }]
+           }
+       }
+   });
+   document.getElementById('affluenceHeuresChart').chart = chartAffluenceHeures;
+
+   var semainesLabels = Object.keys(data.affluence_par_semaine);
+   var datasetsSemaines = [];
+   var couleurs = generateColorPalette(53);
+
+   for (var i = 0; i < semainesLabels.length; i++) {
+       var semaine = semainesLabels[i];
+       var parts = semaine.split('-');
+       var numSemaine = parseInt(parts[1], 10);
+       
+       (function(semaineCapture, num) {
+           datasetsSemaines.push({
+               label: 'S' + num,
+               data: creneaux.map(function(creneau) {
+                   return data.affluence_par_semaine[semaineCapture][creneau] || 0;
+               }),
+               borderColor: couleurs[i % couleurs.length],
+               backgroundColor: 'transparent',
+               tension: 0.2,
+               pointRadius: 5,
+               pointHoverRadius: 8
+           });
+       })(semaine, numSemaine);
+   }
+
+   var chartAffluenceSemaine = new Chart(document.getElementById('affluenceParSemaineChart'), {
+       type: 'line',
+       data: {
+           labels: creneaux,
+           datasets: datasetsSemaines
+       },
+       options: {
+           responsive: true,
+           maintainAspectRatio: false,
+           title: {
+               display: true,
+               text: 'Affluence par tranche de 15 minutes et par semaine',
+               fontSize: 16
+           },
+           plugins: {
+               datalabels: {
+                   display: false
+               }
+           },
+           tooltips: {
+               callbacks: {
+                   label: function(tooltipItem, data) {
+                       var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                       return label + ': ' + tooltipItem.yLabel + ' présences';
+                   }
+               }
+           },
+           scales: {
+               xAxes: [{
+                   scaleLabel: {
+                       display: true,
+                       labelString: 'Heure'
+                   }
+               }],
+               yAxes: [{
+                   ticks: {
+                       beginAtZero: true
+                   },
+                   scaleLabel: {
+                       display: true,
+                       labelString: 'Nombre de présences'
+                   }
+               }]
+           }
+       }
+   });
+   document.getElementById('affluenceParSemaineChart').chart = chartAffluenceSemaine;
+
+   var jourConfig = {
+       type: 'line',
+       options: {
+           responsive: true,
+           maintainAspectRatio: false,
+           title: {
+               display: false
+           },
+           legend: {
+               display: false
+           },
+           plugins: {
+               datalabels: {
+                   display: false
+               }
+           },
+           tooltips: {
+               callbacks: {
+                   label: function(tooltipItem, data) {
+                       var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                       return label + ': ' + tooltipItem.yLabel + ' présences';
+                   }
+               }
+           },
+           scales: {
+               xAxes: [{
+                   scaleLabel: {
+                       display: false
+                   }
+               }],
+               yAxes: [{
+                   ticks: {
+                       beginAtZero: true,
+                       min: 0,
+                       max: 30
+                   },
+                   scaleLabel: {
+                       display: false
+                   }
+               }]
+           }
+       }
+   };
+
+   var joursAffichage = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+   var elementsId = ['lundiChart', 'mardiChart', 'mercrediChart', 'jeudiChart', 'vendrediChart', 'samediChart'];
+   
+   for (var j = 0; j < joursAffichage.length; j++) {
+       var jour = joursAffichage[j];
+       var datasets = [];
+       
+       for (var s = 0; s < semainesLabels.length; s++) {
+           var semaine = semainesLabels[s];
+           var parts = semaine.split('-');
+           var numSemaine = parseInt(parts[1], 10);
+           
+           if (data.affluence_semaines_jours[semaine] && data.affluence_semaines_jours[semaine][jour]) {
+               (function(semaineCapture, jourCapture, num) {
+                   datasets.push({
+                       label: 'S' + num,
+                       data: creneaux.map(function(creneau) {
+                           return data.affluence_semaines_jours[semaineCapture][jourCapture][creneau] || 0;
+                       }),
+                       borderColor: couleurs[s % couleurs.length],
+                       backgroundColor: 'transparent',
+                       borderWidth: 2,
+                       lineTension: 0.2,
+                       pointRadius: 3
+                   });
+               })(semaine, jour, numSemaine);
+           }
+       }
+       
+       var configCopie = {
+           type: jourConfig.type,
+           data: {
+               labels: creneaux,
+               datasets: datasets
+           },
+           options: {
+               responsive: jourConfig.options.responsive,
+               maintainAspectRatio: jourConfig.options.maintainAspectRatio,
+               title: {
+                   display: true,
+                   text: jour,
+                   fontSize: 16,
+                   fontStyle: 'bold'
+               },
+               legend: jourConfig.options.legend,
+               plugins: jourConfig.options.plugins,
+               tooltips: jourConfig.options.tooltips,
+               scales: {
+                   xAxes: jourConfig.options.scales.xAxes,
+                   yAxes: jourConfig.options.scales.yAxes
+               }
+           }
+       };
+       
+       var chartJour = new Chart(document.getElementById(elementsId[j]), configCopie);
+       document.getElementById(elementsId[j]).chart = chartJour;
+   }
+   
+   var legendeContainer = document.getElementById('legende-semaines');
+   legendeContainer.innerHTML = '';
+   
+   legendeContainer.style.padding = '10px';
+   legendeContainer.style.display = 'flex';
+   legendeContainer.style.flexDirection = 'column';
+   legendeContainer.style.maxHeight = '250px';
+   legendeContainer.style.overflowY = 'auto';
+   legendeContainer.style.overflowX = 'hidden';
+   legendeContainer.style.border = '1px solid #eee';
+   legendeContainer.style.borderRadius = '5px';
+   
+   var legendTitle = document.createElement('div');
+   legendTitle.style.fontWeight = 'bold';
+   legendTitle.style.marginBottom = '10px';
+   legendTitle.style.position = 'sticky';
+   legendTitle.style.top = '0';
+   legendTitle.style.backgroundColor = 'white';
+   legendTitle.style.padding = '5px 0';
+   legendTitle.style.borderBottom = '1px solid #eee';
+   legendTitle.innerText = 'Légende';
+   legendeContainer.appendChild(legendTitle);
+   
+   var legendItemsGrid = document.createElement('div');
+   legendItemsGrid.style.display = 'grid';
+   legendItemsGrid.style.gridTemplateColumns = 'repeat(5, 1fr)';
+   legendItemsGrid.style.gap = '5px';
+   legendeContainer.appendChild(legendItemsGrid);
+   
+   for (var i = 0; i < semainesLabels.length; i++) {
+       var semaine = semainesLabels[i];
+       var parts = semaine.split('-');
+       var numSemaine = parseInt(parts[1], 10);
+       
+       var legendeItem = document.createElement('div');
+       legendeItem.style.display = 'flex';
+       legendeItem.style.alignItems = 'center';
+       legendeItem.style.fontSize = '11px';
+       legendeItem.style.padding = '2px';
+       
+       var colorBox = document.createElement('div');
+       colorBox.style.width = '12px';
+       colorBox.style.height = '3px';
+       colorBox.style.backgroundColor = couleurs[i % couleurs.length];
+       colorBox.style.marginRight = '4px';
+       colorBox.style.flexShrink = '0';
+       
+       var labelText = document.createElement('div');
+       labelText.style.whiteSpace = 'nowrap';
+       labelText.style.overflow = 'hidden';
+       labelText.style.textOverflow = 'ellipsis';
+       labelText.innerText = 'S' + numSemaine;
+       
+       legendeItem.appendChild(colorBox);
+       legendeItem.appendChild(labelText);
+       legendItemsGrid.appendChild(legendeItem);
+   }
+
+   if (data.dates && data.dates.length > 0) {
+       var chartPresenceType = new Chart(document.getElementById('presenceTypeChart'), {
+           type: 'bar',
+           data: {
+               labels: data.dates.map(function(date, index) {
+                   return getJourSemaine(data.dates_completes[index]) + ' ' + date;
+               }),
+               datasets: [
+                   {
+                       label: 'Adultes',
+                       data: data.adultes,
+                       backgroundColor: '#8884d8'
+                   },
+                   {
+                       label: 'Enfants',
+                       data: data.enfants,
+                       backgroundColor: '#82ca9d'
+                   },
+                   {
+                       label: 'Jeunes',
+                       data: data.jeunes,
+                       backgroundColor: '#ffc658'
+                   }
+               ]
+           },
+           options: {
+               responsive: true,
+               maintainAspectRatio: false,
+               title: {
+                   display: true,
+                   text: 'Présences par type et par jour',
+                   fontSize: 16
+               },
+               scales: {
+                   xAxes: [{ stacked: true }],
+                   yAxes: [{
+                       stacked: true,
+                       ticks: {
+                           beginAtZero: true
+                       }
+                   }]
+               }
+           }
+       });
+       document.getElementById('presenceTypeChart').chart = chartPresenceType;
+   }
+
+   var chartTotalPresence = new Chart(document.getElementById('totalPresenceChart'), {
+       type: 'bar',
+       data: {
+           labels: data.dates.map(function(date, index) {
+               return getJourSemaine(data.dates_completes[index]) + ' ' + date;
+           }),
+           datasets: [{
+               label: 'Total présences',
+               data: data.dates.map(function(date, index) {
+                   return (data.adultes[index] || 0) + (data.enfants[index] || 0) + (data.jeunes[index] || 0);
+               }),
+               backgroundColor: '#2196F3'
+           }]
+       },
+       options: {
+           responsive: true,
+           maintainAspectRatio: false,
+           title: {
+               display: true,
+               text: 'Total des présences par jour',
+               fontSize: 16
+           },
+           scales: {
+               yAxes: [{ 
+                   ticks: {
+                       beginAtZero: true
+                   }
+               }]
+           }
+       }
+   });
+   document.getElementById('totalPresenceChart').chart = chartTotalPresence;
+}
+    </script>

@@ -1,0 +1,244 @@
+[25-Nov-2025 18:33:23 Europe/Berlin] PHP Warning:  Undefined array key "presence_reelle" in E:\MultiProjet\www\Pointage\ws-handlers\animation-handler.php on line 66
+[25-Nov-2025 18:36:14 Europe/Berlin] PHP Warning:  Undefined array key "presence_reelle" in E:\MultiProjet\www\Pointage\ws-handlers\animation-handler.php on line 66
+[25-Nov-2025 18:42:42 Europe/Berlin] PHP Warning:  Undefined array key "presence_reelle" in E:\MultiProjet\www\Pointage\ws-handlers\animation-handler.php on line 66
+[11-Dec-2025 23:39:12 Europe/Berlin] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\get-ws-ip.php on line 15
+[11-Dec-2025 23:39:12 Europe/Berlin] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php on line 12
+[11-Dec-2025 23:39:12 Europe/Berlin] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php on line 12
+[02-Jan-2026 15:53:07 Europe/Berlin] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\start-ws-server.php on line 28
+[06-Jan-2026 15:24:58 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 5 database is locked in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php:281
+Stack trace:
+#0 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(281): PDOStatement->execute(Array)
+#1 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(269): WebSocketServer->sendInitialState('client_695d1ae4...', '2026-01-06')
+#2 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(224): WebSocketServer->processAction('client_695d1ae4...', Array)
+#3 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(120): WebSocketServer->handleMessage('client_695d1ae4...', '\x81\xF9\x96\xA9\xD3\x95\xED\x8B\xB2\xF6\xE2\xC0\xBC\xFB\xB4...')
+#4 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(423): WebSocketServer->run()
+#5 {main}
+  thrown in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php on line 281
+[07-Jan-2026 11:23:02 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 5 database is locked in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php:281
+Stack trace:
+#0 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(281): PDOStatement->execute(Array)
+#1 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(269): WebSocketServer->sendInitialState('client_695e33b4...', '2026-01-07')
+#2 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(224): WebSocketServer->processAction('client_695e33b4...', Array)
+#3 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(120): WebSocketServer->handleMessage('client_695e33b4...', '\x81\xF9H\xC7\xA0\x863\xE5\xC1\xE5<\xAE\xCF\xE8j...')
+#4 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(423): WebSocketServer->run()
+#5 {main}
+  thrown in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php on line 281
+[09-Jan-2026 15:32:10 Europe/Berlin] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\start-ws-server.php on line 28
+[09-Jan-2026 15:32:10 Europe/Berlin] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\start-ws-server.php on line 28
+[17-Jan-2026 10:05:28 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 10 disk I/O error in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php:281
+Stack trace:
+#0 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(281): PDOStatement->execute(Array)
+#1 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(269): WebSocketServer->sendInitialState('client_696b50d8...', '2026-01-03')
+#2 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(224): WebSocketServer->processAction('client_696b50d8...', Array)
+#3 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(120): WebSocketServer->handleMessage('client_696b50d8...', '\x81\xF9\x913E}\xEA\x11$\x1E\xE5Z*\x13\xB3...')
+#4 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(423): WebSocketServer->run()
+#5 {main}
+  thrown in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php on line 281
+[21-Jan-2026 18:03:40 Europe/Berlin] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\start-ws-server.php on line 28
+[28-Jan-2026 17:59:41 Europe/Berlin] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\start-ws-server.php on line 28
+[30-Jan-2026 16:43:45 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 11 database disk image is malformed in S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php:87
+Stack trace:
+#0 S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php(87): PDOStatement->execute(Array)
+#1 S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php(28): PointageHandler->handleIndividualAdd(Array, 'client_17697822...', '2026-01-30')
+#2 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(251): PointageHandler->handle('individual_add', Array, 'client_17697822...', '2026-01-30')
+#3 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(224): WebSocketServer->processAction('client_697cbc02...', Array)
+#4 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(120): WebSocketServer->handleMessage('client_697cbc02...', '\x81\xFE\x00\xBE\x8Fyg\xAD\xF4[\x06\xCE\xFB\x10\x08...')
+#5 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(423): WebSocketServer->run()
+#6 {main}
+  thrown in S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php on line 87
+[30-Jan-2026 16:43:57 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 11 database disk image is malformed in S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php:87
+Stack trace:
+#0 S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php(87): PDOStatement->execute(Array)
+#1 S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php(28): PointageHandler->handleIndividualAdd(Array, 'client_17697822...', '2026-01-30')
+#2 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(251): PointageHandler->handle('individual_add', Array, 'client_17697822...', '2026-01-30')
+#3 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(224): WebSocketServer->processAction('client_697cd1b8...', Array)
+#4 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(120): WebSocketServer->handleMessage('client_697cd1b8...', '\x81\xFE\x00\xBE\xA7\xC2y\x1D\xDC\xE0\x18~\xD3\xAB\x16...')
+#5 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(423): WebSocketServer->run()
+#6 {main}
+  thrown in S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php on line 87
+[30-Jan-2026 16:44:09 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 11 database disk image is malformed in S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php:87
+Stack trace:
+#0 S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php(87): PDOStatement->execute(Array)
+#1 S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php(28): PointageHandler->handleIndividualAdd(Array, 'client_17697822...', '2026-01-30')
+#2 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(251): PointageHandler->handle('individual_add', Array, 'client_17697822...', '2026-01-30')
+#3 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(224): WebSocketServer->processAction('client_697cd1c5...', Array)
+#4 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(120): WebSocketServer->handleMessage('client_697cd1c5...', '\x81\xFE\x00\xBEE3\xBA\xC6>\x11\xDB\xA51Z\xD5...')
+#5 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(423): WebSocketServer->run()
+#6 {main}
+  thrown in S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php on line 87
+[30-Jan-2026 16:44:48 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 11 database disk image is malformed in S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php:87
+Stack trace:
+#0 S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php(87): PDOStatement->execute(Array)
+#1 S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php(28): PointageHandler->handleIndividualAdd(Array, 'client_17697878...', '2026-01-30')
+#2 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(251): PointageHandler->handle('individual_add', Array, 'client_17697878...', '2026-01-30')
+#3 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(224): WebSocketServer->processAction('client_697cd1ed...', Array)
+#4 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(120): WebSocketServer->handleMessage('client_697cd1ed...', '\x81\xFE\x00\xBE\xBDb\tv\xC6@h\x15\xC9\vf...')
+#5 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(423): WebSocketServer->run()
+#6 {main}
+  thrown in S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php on line 87
+[30-Jan-2026 16:45:10 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 11 database disk image is malformed in S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php:87
+Stack trace:
+#0 S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php(87): PDOStatement->execute(Array)
+#1 S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php(28): PointageHandler->handleIndividualAdd(Array, 'client_17697878...', '2026-01-30')
+#2 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(251): PointageHandler->handle('individual_add', Array, 'client_17697878...', '2026-01-30')
+#3 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(224): WebSocketServer->processAction('client_697cd1f8...', Array)
+#4 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(120): WebSocketServer->handleMessage('client_697cd1f8...', '\x81\xFE\x00\xBE\x9D\xFB`\x8B\xE6\xD9\x01\xE8\xE9\x92\x0F...')
+#5 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(423): WebSocketServer->run()
+#6 {main}
+  thrown in S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php on line 87
+[30-Jan-2026 16:46:08 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 11 database disk image is malformed in S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php:87
+Stack trace:
+#0 S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php(87): PDOStatement->execute(Array)
+#1 S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php(28): PointageHandler->handleIndividualAdd(Array, 'client_17697879...', '2026-01-30')
+#2 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(251): PointageHandler->handle('individual_add', Array, 'client_17697879...', '2026-01-30')
+#3 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(224): WebSocketServer->processAction('client_697cd23d...', Array)
+#4 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(120): WebSocketServer->handleMessage('client_697cd23d...', '\x81\xFE\x00\xBE\xD8{\x00$\xA3YaG\xAC\x12o...')
+#5 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(423): WebSocketServer->run()
+#6 {main}
+  thrown in S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php on line 87
+[30-Jan-2026 16:46:57 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 11 database disk image is malformed in S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php:87
+Stack trace:
+#0 S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php(87): PDOStatement->execute(Array)
+#1 S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php(28): PointageHandler->handleIndividualAdd(Array, 'client_17697880...', '2026-01-30')
+#2 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(251): PointageHandler->handle('individual_add', Array, 'client_17697880...', '2026-01-30')
+#3 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(224): WebSocketServer->processAction('client_697cd269...', Array)
+#4 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(120): WebSocketServer->handleMessage('client_697cd269...', '\x81\xFE\x00\xBEL\x93;\xE57\xB1Z\x868\xFAT...')
+#5 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(423): WebSocketServer->run()
+#6 {main}
+  thrown in S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php on line 87
+[30-Jan-2026 16:52:34 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 11 database disk image is malformed in S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php:87
+Stack trace:
+#0 S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php(87): PDOStatement->execute(Array)
+#1 S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php(28): PointageHandler->handleIndividualAdd(Array, 'client_17697880...', '2026-01-30')
+#2 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(251): PointageHandler->handle('individual_add', Array, 'client_17697880...', '2026-01-30')
+#3 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(224): WebSocketServer->processAction('client_697cd27a...', Array)
+#4 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(120): WebSocketServer->handleMessage('client_697cd27a...', '\x81\xFE\x00\xBD\x10\xD7\xF0Gk\xF5\x91$d\xBE\x9F...')
+#5 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(423): WebSocketServer->run()
+#6 {main}
+  thrown in S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php on line 87
+[30-Jan-2026 17:00:10 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 11 database disk image is malformed in S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php:87
+Stack trace:
+#0 S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php(87): PDOStatement->execute(Array)
+#1 S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php(28): PointageHandler->handleIndividualAdd(Array, 'client_17697888...', '2026-01-30')
+#2 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(251): PointageHandler->handle('individual_add', Array, 'client_17697888...', '2026-01-30')
+#3 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(224): WebSocketServer->processAction('client_697cd587...', Array)
+#4 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(120): WebSocketServer->handleMessage('client_697cd587...', '\x81\xFE\x00\xBE6-\x8A\xF1M\x0F\xEB\x92BD\xE5...')
+#5 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(423): WebSocketServer->run()
+#6 {main}
+  thrown in S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php on line 87
+[30-Jan-2026 17:10:38 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 1 no such table: config in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php:15
+Stack trace:
+#0 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php(15): PDO->exec('DELETE FROM con...')
+#1 {main}
+  thrown in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php on line 15
+[30-Jan-2026 17:10:49 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 1 no such table: config in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php:12
+Stack trace:
+#0 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php(12): PDO->exec('DELETE FROM con...')
+#1 {main}
+  thrown in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php on line 12
+[30-Jan-2026 17:15:45 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 1 no such table: config in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php:15
+Stack trace:
+#0 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php(15): PDO->exec('DELETE FROM con...')
+#1 {main}
+  thrown in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php on line 15
+[30-Jan-2026 17:16:10 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 1 no such table: config in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php:15
+Stack trace:
+#0 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php(15): PDO->exec('DELETE FROM con...')
+#1 {main}
+  thrown in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php on line 15
+[30-Jan-2026 17:16:22 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 1 no such table: config in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php:12
+Stack trace:
+#0 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php(12): PDO->exec('DELETE FROM con...')
+#1 {main}
+  thrown in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php on line 12
+[30-Jan-2026 17:18:43 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 1 no such table: config in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php:15
+Stack trace:
+#0 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php(15): PDO->exec('DELETE FROM con...')
+#1 {main}
+  thrown in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php on line 15
+[30-Jan-2026 17:19:00 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 1 no such table: config in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php:15
+Stack trace:
+#0 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php(15): PDO->exec('DELETE FROM con...')
+#1 {main}
+  thrown in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php on line 15
+[30-Jan-2026 17:19:13 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 1 no such table: config in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php:12
+Stack trace:
+#0 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php(12): PDO->exec('DELETE FROM con...')
+#1 {main}
+  thrown in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php on line 12
+[30-Jan-2026 17:19:58 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 1 no such table: config in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php:15
+Stack trace:
+#0 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php(15): PDO->exec('DELETE FROM con...')
+#1 {main}
+  thrown in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php on line 15
+[30-Jan-2026 17:20:09 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 1 no such table: config in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php:12
+Stack trace:
+#0 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php(12): PDO->exec('DELETE FROM con...')
+#1 {main}
+  thrown in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php on line 12
+[30-Jan-2026 17:21:33 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 11 database disk image is malformed in S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php:87
+Stack trace:
+#0 S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php(87): PDOStatement->execute(Array)
+#1 S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php(28): PointageHandler->handleIndividualAdd(Array, 'client_17697900...', '2026-01-30')
+#2 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(251): PointageHandler->handle('individual_add', Array, 'client_17697900...', '2026-01-30')
+#3 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(224): WebSocketServer->processAction('client_697cda70...', Array)
+#4 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(120): WebSocketServer->handleMessage('client_697cda70...', '\x81\xFE\x00\xBE\xB19\xCAT\xCA\e\xAB7\xC5P\xA5...')
+#5 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(423): WebSocketServer->run()
+#6 {main}
+  thrown in S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php on line 87
+[30-Jan-2026 17:21:53 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 11 database disk image is malformed in S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php:87
+Stack trace:
+#0 S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php(87): PDOStatement->execute(Array)
+#1 S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php(28): PointageHandler->handleIndividualAdd(Array, 'client_17697900...', '2026-01-30')
+#2 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(251): PointageHandler->handle('individual_add', Array, 'client_17697900...', '2026-01-30')
+#3 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(224): WebSocketServer->processAction('client_697cda95...', Array)
+#4 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(120): WebSocketServer->handleMessage('client_697cda95...', '\x81\xFE\x00\xBE#,m\x91X\x0E\f\xF2WE\x02...')
+#5 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(423): WebSocketServer->run()
+#6 {main}
+  thrown in S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php on line 87
+[30-Jan-2026 17:58:07 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 11 database disk image is malformed in S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php:87
+Stack trace:
+#0 S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php(87): PDOStatement->execute(Array)
+#1 S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php(28): PointageHandler->handleIndividualAdd(Array, 'client_17697922...', '2026-01-30')
+#2 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(251): PointageHandler->handle('individual_add', Array, 'client_17697922...', '2026-01-30')
+#3 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(224): WebSocketServer->processAction('client_697ce31b...', Array)
+#4 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(120): WebSocketServer->handleMessage('client_697ce31b...', '\x81\xFE\x00\xBE\x13K\x1F\x83hi~\xE0g"p...')
+#5 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(423): WebSocketServer->run()
+#6 {main}
+  thrown in S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php on line 87
+[30-Jan-2026 17:59:07 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 11 database disk image is malformed in S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php:87
+Stack trace:
+#0 S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php(87): PDOStatement->execute(Array)
+#1 S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php(28): PointageHandler->handleIndividualAdd(Array, 'client_17697923...', '2026-01-30')
+#2 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(251): PointageHandler->handle('individual_add', Array, 'client_17697923...', '2026-01-30')
+#3 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(224): WebSocketServer->processAction('client_697ce358...', Array)
+#4 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(120): WebSocketServer->handleMessage('client_697ce358...', '\x81\xFE\x00\xBE\xE8\xCD\x02.\x93\xEFcM\x9C\xA4m...')
+#5 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(423): WebSocketServer->run()
+#6 {main}
+  thrown in S:\Ludotheque\Outils\MultiProjet\www\Pointage\ws-handlers\pointage-handler.php on line 87
+[31-Jan-2026 13:44:16 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 5 database is locked in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php:281
+Stack trace:
+#0 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(281): PDOStatement->execute(Array)
+#1 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(269): WebSocketServer->sendInitialState('client_697df8cb...', '2026-01-31')
+#2 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(224): WebSocketServer->processAction('client_697df8cb...', Array)
+#3 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(120): WebSocketServer->handleMessage('client_697df8cb...', '\x81\xF9[8\\\xFC \x1A=\x9F/Q3\x92y...')
+#4 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(423): WebSocketServer->run()
+#5 {main}
+  thrown in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php on line 281
+[03-Feb-2026 12:49:36 Europe/Berlin] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\start-ws-server.php on line 30
+[10-Feb-2026 16:29:00 Europe/Berlin] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\start-ws-server.php on line 28
+[19-Feb-2026 15:49:30 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 5 database is locked in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php:281
+Stack trace:
+#0 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(281): PDOStatement->execute(Array)
+#1 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(269): WebSocketServer->sendInitialState('client_699722a3...', '2026-02-19')
+#2 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(224): WebSocketServer->processAction('client_699722a3...', Array)
+#3 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(120): WebSocketServer->handleMessage('client_699722a3...', '\x81\xF9m\x07\xB9\x87\x16%\xD8\xE4\x19n\xD6\xE9O...')
+#4 S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php(423): WebSocketServer->run()
+#5 {main}
+  thrown in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\websocket-server.php on line 281
+[20-Feb-2026 15:51:13 Europe/Berlin] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\get-ws-ip.php on line 15
+[20-Feb-2026 15:51:13 Europe/Berlin] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php on line 12
+[20-Feb-2026 15:51:13 Europe/Berlin] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php on line 12
+[20-Feb-2026 15:51:13 Europe/Berlin] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\get-ws-ip.php on line 15
+[20-Feb-2026 15:51:13 Europe/Berlin] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php on line 12
+[20-Feb-2026 15:51:13 Europe/Berlin] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in S:\Ludotheque\Outils\MultiProjet\www\Pointage\websocket_server\clear-ws-ip.php on line 12

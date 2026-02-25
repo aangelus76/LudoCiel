@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Analyse des présences</title>
+    <meta charset="UTF-8">
+    <!-- jQuery & jQuery UI -->
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script src="../js/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="../css/jquery-ui.css">
+<!-- Chart.js v2.9.4 - Compatible Chrome v57 -->
+<script src="../js/chart.js"></script>
+<!-- Datalabels v0.7.0 - Compatible Chart.js v2 -->
+<script src="../js/chartjs-plugin-datalabels.js"></script>
+
+    <style>
+        .chart-container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .scrollable-chart-container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow-x: auto;
+        }
+        .scrollable-chart {
+            min-width: 800px;
+            height: 400px;
+        }
+        .date-selector {
+            text-align: center;
+            margin: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        input[type="text"] {
+            padding: 8px;
+            margin: 0 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            padding: 8px 16px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .btn-retour {
+            background: #2196F3;
+            margin-bottom: 10px;
+        }
+        .btn-retour:hover {
+            background: #1976D2;
+        }
+        body {
+            background: #f5f5f5;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            max-width: 1000px;
+            margin: 20px auto;
+        }
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .stat-card h3 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2196F3;
+        }
+        .multi-chart-container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .multi-chart-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .small-chart {
+            height: 230px;
+            width: 100%;
+        }
+        .small-chart:last-child {
+            grid-column: 1 / -1;
+            height: auto;
+        }
+        .chart-title {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .stat-medium {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 15px;
+        }
+        .stat-value-medium {
+            font-size: 18px;
+            font-weight: bold;
+            color: #03A9F4;
+        }
+        .stat-big {
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+        .stat-value-big {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2196F3;
+        }
+        body {
+            background: #f5f5f5;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto 20px;
+            text-align: center;
+        }
+        .btn-retour {
+            background: #2196F3;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .btn-retour:hover {
+            background: #1976D2;
+        }
+        #tabs {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        #tab-content {
+            padding: 20px;
+            min-height: 500px;
+        }
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+
+    <div id="tabs">
+        <ul>
+            <li><a href="#tab-periode">Période personnalisée</a></li>
+            <li><a href="#tab-annuel">Rapport annuel</a></li>
+			<li><a href="#tab-vacances">Gestion des Périodes</a></li>
+        </ul>
+        <div id="tab-content">
+            <div id="tab-periode" class="loading">Chargement...</div>
+            <div id="tab-annuel" class="loading">Chargement...</div>
+			<div id="tab-vacances" class="loading">Chargement...</div>
+        </div>
+    </div>
+
+    <script>
+    $(document).ready(function() {
+        // Configuration locale française
+        $.datepicker.regional['fr'] = {
+            closeText: 'Fermer',
+            prevText: '&#x3c;Préc',
+            nextText: 'Suiv&#x3e;',
+            currentText: 'Aujourd\'hui',
+            monthNames: ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 
+                         'Septembre', 'Octobre', 'Novembre', 'Decembre'],
+            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aou', 'Sep', 'Oct', 'Nov', 'Dec'],
+            dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+            dayNamesShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+            dayNamesMin: ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'],
+            weekHeader: ' ',
+            dateFormat: 'yy-mm-dd',
+            firstDay: 1,
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix: ''
+        };
+        $.datepicker.setDefaults($.datepicker.regional['fr']);
+
+        // Initialisation onglets
+        $("#tabs").tabs({
+            beforeActivate: function(event, ui) {
+                var tabId = ui.newPanel.attr('id');
+                loadTabContent(tabId);
+            }
+        });
+
+        // Chargement onglet initial
+        loadTabContent('tab-periode');
+
+        function loadTabContent(tabId) {
+            var $tab = $('#' + tabId);
+            
+            // Si déjà chargé, ne rien faire
+            if ($tab.data('loaded')) return;
+
+            var pageMap = {
+                'tab-periode': 'stats-periode.html',
+                'tab-annuel': 'stats-annuel.html',
+				'tab-vacances': 'vacances.html'
+            };
+
+            var pageUrl = pageMap[tabId];
+            if (!pageUrl) return;
+
+            $tab.html('<div class="loading">Chargement...</div>');
+
+            $.ajax({
+                url: pageUrl,
+                success: function(html) {
+                    $tab.html(html);
+                    $tab.data('loaded', true);
+                },
+                error: function() {
+                    $tab.html('<div class="loading" style="color: #f44336;">Erreur de chargement</div>');
+                }
+            });
+        }
+    });
+    </script>
+</body>
+</html>

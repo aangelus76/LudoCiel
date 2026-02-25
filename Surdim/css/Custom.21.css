@@ -1,0 +1,281 @@
+.dx-viewport, .demo-container{
+	margin-top : 0px;
+}
+.dx-scheduler-timeline .dx-scheduler-date-table-cell {
+	width: 80px;
+}
+.dx-scheduler-timeline.dx-scheduler-work-space-grouped[dx-group-column-count="1"] .dx-scheduler-group-table, .dx-scheduler-timeline.dx-scheduler-work-space-grouped[dx-group-column-count="1"] .dx-scheduler-sidebar-scrollable, .dx-scheduler-timeline.dx-scheduler-work-space-grouped[dx-group-column-count="1"] .dx-scheduler-sidebar-scrollable::before {
+	width: 150px;
+}
+.dx-scheduler-timeline.dx-scheduler-work-space-grouped[dx-group-column-count='1'] .dx-scheduler-date-table-scrollable, .dx-scheduler-timeline.dx-scheduler-work-space-grouped[dx-group-column-count='1'] .dx-scheduler-header-scrollable {
+	margin-left: 150px;
+}
+.dx-scheduler-date-table-cell {
+	height: 30px !important;
+}
+.dx-scheduler-timeline .dx-scheduler-date-table tbody tr {
+	height: 30px !important;
+	min-height: 30px !important;
+	line-height: 0 !important;
+}
+.dx-scheduler-group-row {
+	height: 30px !important;
+	line-height: 0 !important;
+	/*transform: scaleY(0.9575);
+	*/
+}
+.dx-scheduler-group-header {
+	height: 30px !important;
+}
+.dx-scheduler-timeline .dx-scheduler-header-panel-cell:not(.dx-scheduler-header-panel-week-cell), .dx-scheduler-timeline .dx-scheduler-date-table-cell {
+	width: 80px;
+}
+.dx-scheduler-timeline .dx-scheduler-group-header .dx-scheduler-group-header-content {
+	overflow: hidden;
+	padding-top: 10px;
+	float: left;
+}
+.dx-scheduler-appointment {
+	margin-top:-25px;
+}
+.dx-scheduler-appointment-content{
+	border-bottom: dashed 1px;
+}
+.titre {
+	overflow: visible;
+	padding: 16px 0px;
+	float: left;
+	width: 190px;
+	background-size: 6px 6px;
+}
+.sujet{
+	overflow: visible;
+	padding: 16px 145px;
+	/*background: rgba(51, 162, 255, 0.03);
+	*/
+	background-size: 8px 8px;
+}
+.dx-scheduler-timeline .dx-scheduler-group-header {
+	padding: 15px 10px 0 5px;
+	height: auto;
+}
+.dx-scheduler-date-table-cell:hover {
+	/* Définissez la taille souhaitée */
+	background:rgba(60, 141, 72, 0.27);
+	height: 100% !important;
+	/* Ajoutez d'autres styles selon vos besoins */
+}
+.dx-scheduler-timeline .dx-scheduler-date-table .dx-scheduler-date-table-cell {
+	min-height:30px;
+	height:32px;
+	max-height:35px
+}
+.dx-tooltip-wrapper .dx-overlay-content {
+	text-align: left;
+	line-height: 0;
+	padding: 5px;
+}
+.custom-last-day-cell {
+	color: #000;
+}
+.dx-scheduler-timeline .dx-scheduler-group-header {
+	min-height: 35px;
+	min-width: 165px;
+}
+.dx-scheduler-timeline .dx-scheduler-group-header .dx-scheduler-group-header-content {
+	overflow: visible;
+	padding-top: 16px;
+	float: left;
+}
+.dx-scheduler-view-switcher {
+	display: none;
+    }
+.custom-hidden-all-day {
+	display: none;
+}
+.dx-tooltip-appointment-item-delete-button-container {
+	display: inline;
+}
+.Info-Day {
+	float:left;
+	height: 36px;
+	display: flex;
+	align-items: center;
+	color: #1f415f;
+	font-weight: bold;
+}
+/*.dx-scheduler-timeline-month .dx-scheduler-date-table-cell {
+	width: 32px !important;
+	min-width: 50px !important;
+	 Ajustez la largeur des cellules ici (50 pixels dans cet exemple) 
+}*/
+.dx-scheduler-header-panel {
+  margin-top: 0px;
+}
+.dx-toolbar .dx-toolbar-item:last-child {
+  padding: 0;
+  display: flex;
+}
+.dx-toolbar .dx-toolbar-after {
+    padding-left: 15px;
+    display: flex;
+}
+
+.parentTooltipAppaointment {
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+grid-template-rows: 1fr;
+grid-column-gap: 0px;
+grid-row-gap: 0px;
+}
+
+.TooltipAppointmentRange { grid-area: 1 / 1 / 2 / 2; }
+.TooltipAppointmentButton { grid-area: 1 / 2 / 2 / 3; } 
+
+
+/*Test Adaptation Largeur de la page */
+/* Styles pour les cellules de dates */
+.dx-scheduler-timeline .dx-scheduler-date-table-cell {
+    width: 10%; /* Utilise un pourcentage pour s'adapter à la largeur de la page */
+}
+
+.dx-scheduler-timeline .dx-scheduler-date-table tbody tr {
+    height: 30px !important;
+    min-height: 30px !important;
+    line-height: 0 !important;
+}
+
+/* Styles pour les cellules de ressources (à gauche) */
+.dx-scheduler-timeline .dx-scheduler-group-header {
+    min-width: 165px; /* Garde la largeur des cellules de ressources inchangée */
+}
+
+.dx-scheduler-timeline .dx-scheduler-group-header .dx-scheduler-group-header-content {
+    overflow: visible;
+    padding-top: 16px;
+    float: left;
+    width: 190px; /* Garde la largeur des cellules de ressources inchangée */
+}
+
+/* ... Autres styles ... */
+
+/* Styles pour les cellules de dates dans le mode mois */
+.dx-scheduler-timeline-month .dx-scheduler-date-table-cell {
+    width: 2%; /* Utilise un pourcentage pour s'adapter à la largeur de la page */
+    min-width: 25px !important;
+}
+
+.dx-scheduler-header .dx-toolbar {
+  height: 90px;
+  background-color: whitesmoke;
+  position: sticky;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+}
+
+/* Fixer la barre d'en-tête en haut */
+.dx-scheduler-header-panel-container {
+    position: fixed;
+    /*top: 50px;*/
+	top: 70px;
+    left: 0;
+    right: 0;
+    z-index: 999; 
+    background-color: #fff;
+}
+
+.dx-scheduler-work-space-flex-container{
+	padding-top:40px;
+	
+}
+
+.dx-scheduler-header {
+  height: 70px;
+  background-color: #f5f5f5;
+  z-index:900;
+}
+
+.dx-button-has-icon .dx-button-content {
+    padding: 4px;
+}
+
+
+#reservationTags {
+    background-color: rgba(245, 245, 245, 0.3);
+    border-radius: 4px;
+    padding: 5px;
+}
+
+#tagsNavigation {
+    /*background-color: rgba(255, 255, 255, 0.9);*/
+    border-radius: 6px;
+    padding: 4px 8px;
+    border: 1px solid rgba(166, 166, 166, 0.3);
+    /*width: 200px !important;*/
+    box-sizing: border-box;
+}
+
+#tagsNavigation .dx-button {
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+#tagsNavigation .dx-button:hover:not(.dx-state-disabled) {
+    transform: scale(1.05);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+#tagsNavigation .dx-button.dx-state-disabled {
+    opacity: 0.4;
+}
+
+.reservation-tag {
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    transition: all 0.2s ease;
+}
+
+.reservation-tag:hover {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    transform: translateY(-1px);
+}
+
+/* ===== STYLE POUR LA DERNIÈRE CELLULE SÉLECTIONNÉE ===== */
+
+.dx-scheduler-date-table-cell.last-cell-selected {
+  background: linear-gradient(135deg, #858685 0%, #6f7970 100%) !important;
+  border: 4px solid #aa4747 !important;
+  box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.5), 0 0 20px rgba(173, 179, 174, 0.8) !important;
+  position: relative;
+  z-index: 10;
+}
+
+/* Animation pulsante sur la dernière cellule */
+@keyframes last-cell-pulse {
+    0%, 100% {
+        box-shadow: 
+            inset 0 0 30px rgba(255, 255, 255, 0.5),
+            0 0 20px  rgba(194, 195, 194, 0.8);;
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 
+            inset 0 0 40px rgba(255, 255, 255, 0.7),
+            0 0 30px  rgba(194, 195, 194, 0.53);;
+        transform: scale(1.02);
+    }
+}
+
+.dx-scheduler-date-table-cell.last-cell-selected {
+    animation: last-cell-pulse 1.5s ease-in-out infinite;
+}
+
+.dx-scheduler-all-day-table-cell.dx-state-focused,
+.dx-scheduler-date-table-cell.dx-state-focused {
+  background-color: #696a6a6e;
+  opacity: 1;
+  border-top: 2px solid #aa4747;
+  border-bottom: 2px solid #aa4747;
+}

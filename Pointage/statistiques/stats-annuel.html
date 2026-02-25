@@ -1,0 +1,447 @@
+<style>
+.annuel-selector {
+    text-align: center;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    max-width: 600px;
+}
+.annuel-selector select {
+    padding: 8px 16px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin: 0 10px;
+}
+.annuel-selector button {
+    padding: 8px 16px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.annuel-selector button:hover {
+    background: #45a049;
+}
+.chart-container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.stats-annuel {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    max-width: 1200px;
+    margin: 20px auto;
+}
+.stat-card-annuel {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+}
+.stat-card-annuel h3 {
+    margin: 0 0 10px 0;
+    color: #333;
+    font-size: 16px;
+}
+.stat-value-annuel {
+    font-size: 28px;
+    font-weight: bold;
+    color: #2196F3;
+}
+.top-periods {
+    max-width: 1000px;
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.top-periods h3 {
+    margin-top: 0;
+    color: #333;
+}
+.top-list {
+    list-style: none;
+    padding: 0;
+}
+.top-list li {
+    padding: 10px;
+    margin: 5px 0;
+    background: #f5f5f5;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+}
+.top-list .rank {
+    font-weight: bold;
+    color: #2196F3;
+    margin-right: 10px;
+}
+.top-list .value {
+    font-weight: bold;
+    color: #4CAF50;
+}
+.recap-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+.recap-table th,
+.recap-table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: center;
+    font-size: 13px;
+}
+.recap-table th {
+    background: #f5f5f5;
+    font-weight: bold;
+}
+.recap-table .total-row {
+    background: #e3f2fd;
+    font-weight: bold;
+}
+.recap-table .vacances-row {
+    background: #e8f5e9 !important;
+}
+.recap-table .fermeture-row {
+    background: #ffebee !important;
+}
+.recap-table .mixte-row {
+    background: #fff3e0 !important;
+}
+</style>
+
+<div class="annuel-selector">
+    <label for="anneeSelect">Sélectionner une année :</label>
+    <select id="anneeSelect"></select>
+    <button onclick="chargerRapportAnnuel()">Afficher le rapport</button>
+</div>
+
+<div class="stats-annuel">
+    <div class="stat-card-annuel">
+        <h3>Adhérents</h3>
+        <div class="stat-value-annuel" id="annuel_adherents" style="color: #2196F3;">-</div>
+        <div style="font-size: 14px; color: #666; margin-top: 5px;">
+            <span id="annuel_heures_adherents">-</span>
+        </div>
+    </div>
+    <div class="stat-card-annuel">
+        <h3>Partenaires</h3>
+        <div class="stat-value-annuel" id="annuel_partenaires" style="color: #FF9800;">-</div>
+        <div style="font-size: 14px; color: #666; margin-top: 5px;">
+            <span id="annuel_heures_partenaires">-</span>
+        </div>
+    </div>
+    <div class="stat-card-annuel">
+        <h3>Soirées</h3>
+        <div class="stat-value-annuel" id="annuel_soirees" style="color: #9C27B0;">-</div>
+        <div style="font-size: 14px; color: #666; margin-top: 5px;">
+            <span id="annuel_heures_soirees">-</span>
+        </div>
+    </div>
+    <div class="stat-card-annuel">
+        <h3>Total</h3>
+        <div class="stat-value-annuel" id="annuel_total_presences" style="color: #4CAF50;">-</div>
+        <div style="font-size: 14px; color: #666; margin-top: 5px;">
+            <span id="annuel_total_heures">-</span> | Moy: <span id="annuel_moyenne_semaine">-</span>/sem
+        </div>
+    </div>
+</div>
+
+<div class="top-periods">
+    <h3>🏆 Top 5 semaines les plus fréquentées</h3>
+    <ul class="top-list" id="topSemaines"></ul>
+</div>
+
+<div class="chart-container">
+    <canvas id="comparaisonHebdoChart"></canvas>
+</div>
+
+<div class="chart-container">
+    <h3 style="text-align: center; margin-bottom: 20px;">Récapitulatif hebdomadaire (Lundi→Dimanche)</h3>
+    <div id="tableauRecapSemaines"></div>
+</div>
+
+<script src="../js/Chart.js"></script>
+<script src="../js/chartjs-plugin-datalabels.js"></script>
+
+<script>
+/* Configuration globale Chart.js v2 */
+Chart.defaults.global.plugins.datalabels = {
+   color: 'black',
+   font: { weight: 'bold' },
+   formatter: function(value) { return value || ''; }
+};
+
+// Variable globale pour stocker les vacances
+var periodesVacances = [];
+var fermetures = [];
+
+// Génération liste années
+(function() {
+    var select = document.getElementById('anneeSelect');
+    var currentYear = new Date().getFullYear();
+    for (var year = currentYear; year >= 2020; year--) {
+        var option = document.createElement('option');
+        option.value = year;
+        option.text = year;
+        if (year === currentYear) option.selected = true;
+        select.appendChild(option);
+    }
+})();
+
+// Convertit minutes en format HH:MM
+function formatHeures(minutes) {
+    var heures = Math.floor(minutes / 60);
+    var mins = minutes % 60;
+    return heures + ':' + (mins < 10 ? '0' : '') + mins;
+}
+
+// Additionne des heures au format HH:MM
+function additionnerHeures(heure1, heure2) {
+    var parts1 = heure1.split(':');
+    var parts2 = heure2.split(':');
+    var totalMinutes = (parseInt(parts1[0]) * 60 + parseInt(parts1[1])) + 
+                      (parseInt(parts2[0]) * 60 + parseInt(parts2[1]));
+    return formatHeures(totalMinutes);
+}
+
+// Vérifie si une semaine (lundi→dimanche) chevauche une période de vacances
+function estEnVacances(lundi, dimanche) {
+    var dateL = new Date(lundi);
+    var dateD = new Date(dimanche);
+    
+    for (var i = 0; i < periodesVacances.length; i++) {
+        var debut = new Date(periodesVacances[i].date_debut);
+        var fin = new Date(periodesVacances[i].date_fin);
+        
+        // Chevauchement si lundi <= fin ET dimanche >= debut
+        if (dateL <= fin && dateD >= debut) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// Vérifie si une semaine chevauche une période de fermeture
+function estEnFermeture(lundi, dimanche) {
+    var dateL = new Date(lundi);
+    var dateD = new Date(dimanche);
+    
+    for (var i = 0; i < fermetures.length; i++) {
+        var debut = new Date(fermetures[i].date_debut);
+        var fin = new Date(fermetures[i].date_fin);
+        
+        if (dateL <= fin && dateD >= debut) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function chargerRapportAnnuel() {
+    var annee = document.getElementById('anneeSelect').value;
+    
+    // Charger vacances + fermetures puis les données
+    var promVacances = fetch('vacances_api.php?action=getAll&annee=' + annee)
+        .then(function(response) { return response.json(); });
+    
+    var promFermetures = fetch('vacances_api.php?action=getFermetures&annee=' + annee)
+        .then(function(response) { return response.json(); });
+    
+    Promise.all([promVacances, promFermetures])
+        .then(function(results) {
+            periodesVacances = results[0];
+            fermetures = results[1];
+            
+            return fetch('get_presence_data_annuel.php?annee=' + annee);
+        })
+        .then(function(response) { return response.json(); })
+        .then(function(data) {
+            afficherRapportAnnuel(data, annee);
+        })
+        .catch(function(error) {
+            console.error('Erreur:', error);
+            alert('Erreur lors du chargement des données');
+        });
+}
+
+function afficherRapportAnnuel(data, annee) {
+    // Mise à jour stats cards
+    document.getElementById('annuel_adherents').textContent = data.totaux.adherents;
+    document.getElementById('annuel_heures_adherents').textContent = data.heures.adherents;
+    
+    document.getElementById('annuel_partenaires').textContent = data.totaux.partenaires;
+    document.getElementById('annuel_heures_partenaires').textContent = data.heures.partenaires;
+    
+    document.getElementById('annuel_soirees').textContent = data.totaux.soirees;
+    document.getElementById('annuel_heures_soirees').textContent = data.heures.soirees;
+    
+    document.getElementById('annuel_total_presences').textContent = data.totaux.total_presences;
+    document.getElementById('annuel_total_heures').textContent = data.heures.total;
+    document.getElementById('annuel_moyenne_semaine').textContent = data.totaux.moyenne_semaine;
+    
+    // Top 5 semaines
+    afficherTopSemaines(data.top_5_semaines);
+    
+    // Graphique comparaison hebdo
+    creerGraphiqueComparaisonHebdo(data, annee);
+    
+    // Tableau récap
+    creerTableauRecapSemaines(data, annee);
+}
+
+function afficherTopSemaines(top5) {
+    var ul = document.getElementById('topSemaines');
+    ul.innerHTML = '';
+    
+    // Convertir objet en tableau pour garantir ordre tri
+    var semainesArray = [];
+    for (var num in top5) {
+        semainesArray.push({
+            numero: num,
+            total: top5[num].total
+        });
+    }
+    
+    // Re-trier par total décroissant (au cas où)
+    semainesArray.sort(function(a, b) {
+        return b.total - a.total;
+    });
+    
+    // Affichage
+    for (var i = 0; i < semainesArray.length; i++) {
+        var s = semainesArray[i];
+        var li = document.createElement('li');
+        li.innerHTML = '<span><span class="rank">' + (i + 1) + '.</span> Semaine ' + s.numero + '</span>' +
+                      '<span class="value">' + s.total + ' présences</span>';
+        ul.appendChild(li);
+    }
+}
+
+function creerGraphiqueComparaisonHebdo(data, annee) {
+    var canvas = document.getElementById('comparaisonHebdoChart');
+    var existingChart = canvas.chart;
+    if (existingChart) existingChart.destroy();
+    
+    var labels = [];
+    var adherents = [];
+    var partenaires = [];
+    var soirees = [];
+    
+    for (var i = 0; i < data.semaines.length; i++) {
+        var s = data.semaines[i];
+        var numSemaine = s.numero;
+        
+        labels.push('S' + numSemaine);
+        adherents.push(data.data_par_semaine[numSemaine].adherents);
+        partenaires.push(data.data_par_semaine[numSemaine].partenaires);
+        soirees.push(data.data_par_semaine[numSemaine].soirees);
+    }
+    
+    var chart = new Chart(canvas, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [
+                { label: 'Adhérents', data: adherents, backgroundColor: '#2196F3', barPercentage: 0.8, categoryPercentage: 0.9 },
+                { label: 'Partenaires', data: partenaires, backgroundColor: '#FF9800', barPercentage: 0.8, categoryPercentage: 0.9 },
+                { label: 'Soirées', data: soirees, backgroundColor: '#9C27B0', barPercentage: 0.8, categoryPercentage: 0.9 }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            title: { display: true, text: 'Comparaison hebdomadaire ' + annee, fontSize: 16 },
+            plugins: { 
+                datalabels: { 
+                    display: false
+                } 
+            },
+            scales: { 
+                xAxes: [{ stacked: false }], 
+                yAxes: [{ stacked: false, ticks: { beginAtZero: true } }] 
+            }
+        }
+    });
+    canvas.chart = chart;
+}
+
+function creerTableauRecapSemaines(data, annee) {
+    var container = document.getElementById('tableauRecapSemaines');
+    
+    var html = '<table class="recap-table"><thead><tr>';
+    html += '<th>Semaine</th><th>Adhérents</th><th>Heures Adh.</th><th>Partenaires</th><th>Heures Part.</th>';
+    html += '<th>Soirées</th><th>Heures Soir.</th><th>Total</th><th>Total Heures</th></tr></thead><tbody>';
+    
+    var totaux = { 
+        adherents: 0, heuresAdh: '0:00', 
+        partenaires: 0, heuresPart: '0:00', 
+        soirees: 0, heuresSoir: '0:00', 
+        total: 0, totalH: '0:00' 
+    };
+    
+    for (var i = 0; i < data.semaines.length; i++) {
+        var s = data.semaines[i];
+        var numSemaine = s.numero;
+        var d = data.data_par_semaine[numSemaine];
+        
+        // Vérifier vacances ET fermetures
+        var enVacances = estEnVacances(s.lundi, s.dimanche);
+        var enFermeture = estEnFermeture(s.lundi, s.dimanche);
+        
+        var classRow = '';
+        if (enVacances && enFermeture) {
+            classRow = ' class="mixte-row"';
+        } else if (enFermeture) {
+            classRow = ' class="fermeture-row"';
+        } else if (enVacances) {
+            classRow = ' class="vacances-row"';
+        }
+        
+        // Utiliser les minutes calculées côté PHP
+        var heuresAdh = formatHeures(d.minutes_adherents);
+        var heuresPart = formatHeures(d.minutes_partenaires);
+        var heuresSoir = formatHeures(d.minutes_soirees);
+        var totalHeures = additionnerHeures(additionnerHeures(heuresAdh, heuresPart), heuresSoir);
+        
+        html += '<tr' + classRow + '><td style="border-left: solid 2px black;border-right: solid;">S' + numSemaine + '</td>';
+        html += '<td  style="border-left: solid 2px black;">' + d.adherents + '</td><td>' + heuresAdh + '</td>';
+        html += '<td  style="border-left: solid 2px black;">' + d.partenaires + '</td><td>' + heuresPart + '</td>';
+        html += '<td  style="border-left: solid 2px black;">' + d.soirees + '</td><td style="border-right: solid;">' + heuresSoir + '</td>';
+        html += '<td>' + d.total + '</td><td style="border-right: solid;">' + totalHeures + '</td></tr>';
+        
+        totaux.adherents += d.adherents;
+        totaux.heuresAdh = additionnerHeures(totaux.heuresAdh, heuresAdh);
+        totaux.partenaires += d.partenaires;
+        totaux.heuresPart = additionnerHeures(totaux.heuresPart, heuresPart);
+        totaux.soirees += d.soirees;
+        totaux.heuresSoir = additionnerHeures(totaux.heuresSoir, heuresSoir);
+        totaux.total += d.total;
+        totaux.totalH = additionnerHeures(totaux.totalH, totalHeures);
+    }
+    
+    html += '<tr class="total-row"><td style="border-left: solid 2px black;"><strong>Total ' + annee + '</strong></td>';
+    html += '<td style="border-left: solid 2px black;"><strong>' + totaux.adherents + '</strong></td><td><strong>' + totaux.heuresAdh + '</strong></td>';
+    html += '<td style="border-left: solid 2px black;"><strong>' + totaux.partenaires + '</strong></td><td><strong>' + totaux.heuresPart + '</strong></td>';
+    html += '<td style="border-left: solid 2px black;"><strong>' + totaux.soirees + '</strong></td><td style="border-right: solid;"><strong>' + totaux.heuresSoir + '</strong></td>';
+    html += '<td><strong>' + totaux.total + '</strong></td><td style="border-right: solid;"><strong>' + totaux.totalH + '</strong></td></tr>';
+    html += '</tbody></table>';
+    
+    container.innerHTML = html;
+}
+
+setTimeout(function() { chargerRapportAnnuel(); }, 500);
+</script>

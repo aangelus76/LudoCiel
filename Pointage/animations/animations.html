@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Animations</title>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script src="../js/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="../css/jquery-ui.css">
+    <link rel="stylesheet" href="../css/font-awesome.min.css">
+    <link rel="stylesheet" href="animations.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Panneau gauche -->
+        <div class="left-panel">
+            <h1>ANIMATIONS</h1>
+            
+            <div class="month-selector">
+                <button class="month-nav" id="prevMonth">◄</button>
+                <span id="currentMonth">Novembre 2025</span>
+                <button class="month-nav" id="nextMonth">►</button>
+            </div>
+            
+            <div class="period-toggle-container">
+                <label style="font-weight: bold; font-size: 14px; margin-bottom: 8px; display: block;">Période personnalisée</label>
+                <input type="checkbox" id="periodToggle" class="toggle-switch">
+                <label for="periodToggle" class="toggle-label"></label>
+                
+                <div id="periodSelectors" style="display: none;">
+                    <div class="period-month-row">
+                        <div class="period-month-item">
+                            <label>De:</label>
+                            <button class="month-nav" id="prevMonthStart">◄</button>
+                            <span id="startMonth">Novembre 2025</span>
+                            <button class="month-nav" id="nextMonthStart">►</button>
+                        </div>
+                        <div class="period-month-item">
+                            <label>À:</label>
+                            <button class="month-nav" id="prevMonthEnd">◄</button>
+                            <span id="endMonth">Novembre 2025</span>
+                            <button class="month-nav" id="nextMonthEnd">►</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filters">
+                <div class="filter-section-title">PROJETS :</div>
+                <div id="filterTypes"></div>
+            </div>
+            
+            <div class="filters" style="margin-top: 20px;">
+                <div class="filter-section-title">ANIMATEURS :</div>
+                <div id="filterAnimateurs"></div>
+            </div>
+        </div>
+        
+        <!-- Panneau droit -->
+        <div class="right-panel">
+            <div class="top-actions">
+                <button class="btn-action-green" onclick="showCreateModal()" style="margin-left:10px;"><i class="fa fa-plus"></i> Ajouter une animation</button>
+                <button class="btn-action-blue" onclick="showAnimateursModal()"><i class="fa fa-user"></i> Gérer les animateurs</button>
+                <button class="btn-action-blue" onclick="showTypesModal()"><i class="fa fa-list"></i> Gérer les projets</button>
+                <button class="btn-action-blue" onclick="showEmailsModal()"><i class="fa fa-envelope"></i> Gérer les emails</button>
+            </div>
+            
+            <div style="padding: 10px;">
+                <table class="animations-table">
+                    <thead>
+                        <tr>
+                            <th>DATE</th>
+                            <th>HORAIRE</th>
+                            <th>TITRE</th>
+                            <th>PROJET</th>
+                            <th style="text-align: center;">PLACES<br><span style="font-size: 10px; font-weight: normal;">restantes/ [Forcé] (Attente)</span></th>
+                            <th style="text-align: center;">ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody id="animationsList"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal Création/Édition Animation -->
+    <div id="animationModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('animationModal')">&times;</span>
+            <h2 id="modalTitle">Créer une animation</h2>
+            <form id="animationForm">
+                <input type="hidden" id="animationId">
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <label>Nom *</label>
+                        <input type="text" id="nom" required>
+                    </div>
+                    <div class="form-col">
+                        <label>Date(s) *</label>
+                        <input type="text" id="date_temp" readonly placeholder="Sélectionner une date..." style="cursor: pointer;">
+                    </div>
+                </div>
+                
+                <!-- Zone des dates sélectionnées sur toute la largeur -->
+                <div class="form-row" style="width:625px">
+                    <div id="datesList" style="flex: 1;"></div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <label>Heure début *</label>
+                        <div class="time-picker-unified">
+                            <input type="text" id="heure_debut_h" class="time-input time-input-hours" placeholder="--" maxlength="2">
+                            <span class="time-separator-unified">:</span>
+                            <input type="text" id="heure_debut_m" class="time-input time-input-minutes" value="00" maxlength="2">
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <label>Heure fin *</label>
+                        <div class="time-picker-unified">
+                            <input type="text" id="heure_fin_h" class="time-input time-input-hours" placeholder="--" maxlength="2">
+                            <span class="time-separator-unified">:</span>
+                            <input type="text" id="heure_fin_m" class="time-input time-input-minutes" value="00" maxlength="2">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <label>Projet</label>
+                        <select id="type_id"></select>
+                    </div>
+                    <div class="form-col">
+                        <label>Nombre de places</label>
+                        <input type="number" id="nb_places" min="1">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <label>Lieu</label>
+                        <input type="text" id="lieu">
+                    </div>
+                    <div class="form-col">
+                        <label>Animateur référent</label>
+                        <select id="animateur_id"></select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="compter_stats">
+                        Compter dans les statistiques
+                    </label>
+                </div>
+                
+                <div class="form-row" id="presenceReelleGroup" style="display:none;">
+                    <div class="form-col">
+                        <label>Présence réelle (à remplir après l'animation)</label>
+                        <input type="number" id="presence_reelle" min="0">
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn-action-green">Enregistrer</button>
+                    <button type="button" class="btn-secondary" onclick="closeModal('animationModal')">Annuler</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modal Inscriptions -->
+    <div id="inscriptionsModal" class="modal">
+        <div class="modal-content modal-800 modal-large">
+            <span class="close" onclick="closeModal('inscriptionsModal')">&times;</span>
+            <h2 id="inscriptionsTitle">Inscriptions</h2>
+            
+            <div id="animationInfo" class="animation-info"></div>
+            
+            <h3>Nouvelle inscription</h3>
+            <form id="inscriptionForm">
+                <input type="hidden" id="inscription_animation_id">
+                
+                <div class="form-row" style="align-items: flex-end;">
+                    <div class="form-col" style="flex: 2;">
+                        <label>Identité *</label>
+                        <input type="text" id="inscription_identite" required>
+                    </div>
+                    <div class="form-col" style="flex: 2;">
+                        <label>Téléphone</label>
+                        <input type="tel" id="inscription_telephone">
+                    </div>
+                    <div class="form-col" style="flex: 1; min-width: 80px;">
+                        <label>Place(s)</label>
+                        <input type="number" id="inscription_nb_personnes" value="1" min="1" style="width: 80px;">
+                    </div>
+                    <div class="form-col" style="flex: 0;">
+                        <button type="submit" class="btn-action-green">Ajouter</button>
+                    </div>
+                </div>
+            </form>
+            
+            <h3>Liste des inscrits</h3>
+            <div id="placesInfo" class="places-info" style="display: inline-block;"></div>
+            <button class="btn-action-orange" onclick="exportInscriptionsPDF()" style="float: right;"><i class="fa fa-file-pdf-o"></i> Export PDF</button>
+            <div class="inscriptions-table-container">
+                <table class="inscriptions-table">
+                    <thead>
+                        <tr>
+                            <th style="min-width:250px;">Identité</th>
+                            <th style="min-width:100px;">Téléphone</th>
+                            <th style="text-align: center;">Place(s)</th>
+                            <th>Statut</th>
+                            <th>Date inscription</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inscriptionsList"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal Gestion Types -->
+    <div id="typesModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('typesModal')">&times;</span>
+            <h2>Gérer les projets d'animations</h2>
+            
+            <form id="typeForm">
+                <div class="form-row">
+                    <div class="form-col" style="flex: 3;">
+                        <label>Nouveau projet</label>
+                        <input type="text" id="nouveau_type">
+                    </div>
+                    <div class="form-col" style="flex: 1; align-items: flex-end; margin-top: 20px;">
+                        <button type="submit" class="btn-action-green">Ajouter</button>
+                    </div>
+                </div>
+            </form>
+            
+            <ul id="typesList" class="simple-list"></ul>
+        </div>
+    </div>
+    
+    <!-- Modal Gestion Animateurs -->
+    <div id="animateursModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('animateursModal')">&times;</span>
+            <h2>Gérer les animateurs</h2>
+            
+            <form id="animateurForm">
+                <div class="form-row">
+                    <div class="form-col" style="flex: 3;">
+                        <label>Nouvel animateur</label>
+                        <input type="text" id="nouveau_animateur">
+                    </div>
+                    <div class="form-col" style="flex: 1; align-items: flex-end; margin-top: 20px;">
+                        <button type="submit" class="btn-action-green">Ajouter</button>
+                    </div>
+                </div>
+            </form>
+            
+            <ul id="animateursList" class="simple-list"></ul>
+        </div>
+		</div>
+    
+    <!-- Modal Gestion Emails -->
+    <div id="emailsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('emailsModal')">&times;</span>
+            <h2>Gérer les emails</h2>
+            
+            <form id="emailForm">
+                <div class="form-row">
+                    <div class="form-col" style="flex: 3;">
+                        <label>Nouvel email</label>
+                        <input type="email" id="nouveau_email" placeholder="exemple@email.com">
+                    </div>
+                    <div class="form-col" style="flex: 1; align-items: flex-end; margin-top: 20px;">
+                        <button type="submit" class="btn-action-green">Ajouter</button>
+                    </div>
+                </div>
+            </form>
+            
+            <div style="margin: 20px 0;">
+                <button class="btn-action-orange" onclick="copyAllEmails()"><i class="fa fa-copy"></i> Copier tous les emails</button>
+				<span id="emailCount" style="margin-left: 15px; font-weight: bold;">0 emails</span>
+            </div>
+            
+            <ul id="emailsList" class="simple-list"></ul>
+        </div>
+    </div>
+    
+    
+    <!-- Dialog personnalisé pour alerts/confirm/prompt -->
+    <div id="customDialog" style="display:none;">
+        <p id="dialogMessage"></p>
+        <input type="text" id="dialogInput" style="width: 100%; padding: 5px; display: none;" />
+    </div>
+    
+    <!-- WebSocket client pour animations (CRITIQUE: doit être chargé AVANT animations.js) -->
+    <script src="../ws-handlers/WS_Animations.js"></script>
+    
+    <script src="animations.js"></script>
+    <script src="../js/jspdf.min.js"></script>
+    <script src="animations_pdf.js"></script>
+</body>
+</html>
