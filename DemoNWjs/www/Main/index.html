@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; background: #1e1e1e; overflow: hidden; }
+
+    nav {
+      background: #2a2a2a;
+      padding: 8px 16px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      border-bottom: 1px solid #3a3a3a;
+    }
+    nav button {
+      padding: 6px 18px;
+      border-radius: 6px;
+      border: 1px solid #444;
+      background: #1e1e1e;
+      color: #aaa;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+    nav button.active { background: #2d7a2d; color: #fff; border-color: #2d7a2d; cursor: default; }
+    nav button:not(.active):hover { background: #333; color: #eee; }
+    #btn-logs { margin-left: auto; background: #1a1a2e; border-color: #333; color: #888; }
+    #btn-logs:hover { background: #222; color: #aaa; }
+
+    #container { height: calc(100vh - 41px); position: relative; }
+    iframe { width: 100%; height: 100%; border: none; display: none; position: absolute; top: 0; left: 0; }
+    iframe.visible { display: block; }
+
+    #log-panel {
+      display: none;
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 200px;
+      background: #0d0d0d;
+      border-top: 2px solid #333;
+      overflow-y: auto;
+      padding: 8px;
+      font-family: monospace;
+      font-size: 11px;
+      color: #aaa;
+      z-index: 100;
+    }
+    #log-panel.visible { display: block; }
+    .log-line { padding: 1px 0; border-bottom: 1px solid #1a1a1a; }
+    .log-line.server  { color: #4caf50; }
+    .log-line.manager { color: #2196f3; }
+    .log-line.error   { color: #f44336; }
+  </style>
+</head>
+<body>
+  <nav id="nav" style="display:none">
+    <button id="btn1" class="active" onclick="showApp(1)">Chat 1</button>
+    <button id="btn2" onclick="showApp(2)">Chat 2</button>
+    <button id="btn3" onclick="showApp(3)">Chat 3</button>
+    <button id="btn-logs" onclick="toggleLogs()">📋 Logs</button>
+  </nav>
+  <div id="container">
+    <iframe id="app1" class="visible"></iframe>
+    <iframe id="app2"></iframe>
+    <iframe id="app3"></iframe>
+    <div id="log-panel"></div>
+  </div>
+
+  <script>
+    const { EventEmitter } = require('events');
+
+    global.appEvents = new EventEmitter();
+    global.appEvents.setMaxListeners(50);
+
+    // Fonction de log globale accessible par tous les modules
+    const logPanel = document.getElementById('log-panel');
+    global.appLog = (...args) => {
+      const text = args.join(' ');
+      console.log(text); // aussi dans la console DevTools
+      const line = document.createElement('div');
+      line.classList.add('log-line');
+      if (text.includes('[SERVER]') || text.includes('Serveur')) line.classList.add('server');
+      else if (text.includes('[MANAGER]')) line.classList.add('manager');
+      else if (text.includes('error') || text.includes('Error')) line.classList.add('error');
+      line.textContent = new Date().toLocaleTimeString() + ' ' + text;
+      logPanel.appendChild(line);
+      logPanel.scrollTop = logPanel.scrollHeight;
+    };
+
+    function toggleLogs() {
+      logPanel.classList.toggle('visible');
+    }
+
+    function showApp(n) {
+      for (let i = 1; i <= 3; i++) {
+        document.getElementById('app' + i).classList.toggle('visible', i === n);
+        document.getElementById('btn' + i).classList.toggle('active', i === n);
+      }
+    }
+
+    // Ouvrir le splash
+    nw.Window.open('www/Main/splash.html', {
+      width: 400, height: 200,
+      frame: false, transparent: true,
+      always_on_top: true, show_in_taskbar: false,
+      resizable: false, position: 'center'
+    }, (splashWin) => {
+
+      require('../app-sockets.js');
+
+      global.chat1ws = require('../Chat1/ws.js');
+      global.chat2ws = require('../Chat2/ws.js');
+      global.chat3ws = require('../Chat3/ws.js');
+
+      const manager = require('../socket-manager.js');
+      manager.init().then(() => {
+
+        document.getElementById('app1').src = '../Chat1/index.html';
+        document.getElementById('app2').src = '../Chat2/index.html';
+        document.getElementById('app3').src = '../Chat3/index.html';
+
+        let shown = false;
+        function showApp() {
+          if (shown) return;
+          shown = true;
+          splashWin.close();
+          document.getElementById('nav').style.display = 'flex';
+          nw.Window.get().show();
+        }
+
+        global.appEvents.once('ws-ready', showApp);
+        setTimeout(showApp, 8000);
+      });
+    });
+  </script>
+</body>
+</html>

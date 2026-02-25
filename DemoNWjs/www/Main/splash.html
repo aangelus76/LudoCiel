@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    * { margin: 0; padding: 0; }
+    body { background: transparent; overflow: hidden; width: 400px; height: 200px; }
+    img { width: 400px; height: 200px; object-fit: contain; display: block; }
+  </style>
+</head>
+<body>
+  <img id="img" />
+  <script>
+    const fs   = require('fs');
+    const path = require('path');
+    // process.cwd() = dossier de nw.exe
+    const file = path.join(process.cwd(), 'www', 'Main', 'splash.png');
+    try {
+      const data = fs.readFileSync(file);
+      document.getElementById('img').src = 'data:image/png;base64,' + data.toString('base64');
+    } catch(e) {
+      document.body.style.background = 'red'; // si erreur = fond rouge
+    }
+  </script>
+</body>
+</html>

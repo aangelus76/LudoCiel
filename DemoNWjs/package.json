@@ -1,0 +1,14 @@
+{
+  "name": "chat-local",
+  "main": "www/Main/index.html",
+  "window": {
+    "title": "Chat Local DEMO",
+    "width": 640,
+    "height": 720,
+    "toolbar": false,
+    "position": "center",
+	"icon": "www/Main/icone.png",
+    "show": false
+  },
+  "nodejs": true
+}
